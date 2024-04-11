@@ -1,0 +1,99 @@
+const { prefix, currency } = require('../../config.js');
+const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
+const User = require('../../Schemas/economy/userSchema');
+const ms = require('pretty-ms');
+
+module.exports = {
+  name: 'coinflip',
+  aliases: ['cf'],
+  description: 'Make a coinflip bet',
+  async execute({ args, msg }) {
+      try {
+      const cooldown = await Cooldown.findOne({ userId: msg.author.id });
+
+      if (cooldown && cooldown.cooldownExpiration > Date.now()) {
+        const timeLeft = Math.floor((cooldown.cooldownExpiration - Date.now()) / 1000); // Convert to seconds
+
+        // Send cooldown message with remaining time using Discord time formatting
+        return msg.reply(`**${msg.author.displayName}**, hey slowdown! You can use this command again <t:${Math.floor(Date.now() / 1000) + timeLeft}:R>.`);
+      }
+
+      const timeout = 20000; // 20 seconds in milliseconds
+
+      if (!args[0]) {
+        return msg.reply(`Wrong argument! Usage: \`\`${prefix} coinflip <amount> [heads/tails]\`\``);
+      }
+
+      const user = msg.author;
+      let amount = args[0].toLowerCase() === 'all' ? (await User.findOne({ userId: user.id })).balance : parseInt(args[0]);
+      const bet = args[1] && args[1].toLowerCase();
+
+      amount = Math.min(amount, 250000);
+
+      if (isNaN(amount) || amount <= 0) {
+        return msg.reply('Amount must be a positive number');
+      }
+
+      let betLabel;
+      let userBet;
+
+      if (bet === 'h' || bet === 'heads') {
+        userBet = 'heads';
+        betLabel = 'heads';
+      } else if (bet === 't' || bet === 'tails') {
+        userBet = 'tails';
+        betLabel = 'tails';
+      } else {
+        // If the user didn't choose heads or tails, default to 'heads'
+        userBet = 'heads';
+        betLabel = 'heads'; // Adjusted to show 'heads' explicitly
+      }
+
+      const existingUser = await User.findOne({ userId: user.id });
+      const currentBalance = existingUser.balance;
+
+      if (currentBalance < amount) {
+        return msg.reply(`You don't have enough ${currency} coins to make that bet`);
+      }
+
+      // Send the initial message indicating the user's choice and the amount bet
+      const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **${amount.toLocaleString()}** ${currency} coins`);
+
+      setTimeout(async () => {
+        const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
+        let outcome;
+        let winnings = 0;
+
+        // Determine the outcome based on the user's bet
+        if (result === userBet) {
+          outcome = 'won';
+          winnings = amount * 2; // User wins double the bet amount
+        } else {
+          outcome = 'lost';
+        }
+
+        // Update user balance
+        if (outcome === 'won') {
+          existingUser.balance += winnings - amount; // Add winnings and subtract the initial bet
+        } else {
+          existingUser.balance -= amount; // Deduct the bet amount if lost
+        }
+
+        await existingUser.save();
+
+        // Edit the initial message to reveal the outcome
+        if (outcome === 'won') {
+          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **${winnings.toLocaleString()}** ${currency} coins`);
+        } else {
+          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and **${outcome}** **${amount.toLocaleString()}** ${currency} coins`);
+        }
+      }, 4000);
+
+      // Set cooldown
+      await Cooldown.findOneAndUpdate({ userId: user.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });
+    } catch (error) {
+      console.error('An error occurred while processing coinflip command:', error);
+      msg.reply('An error occurred while processing your request.');
+    }
+  },
+};
