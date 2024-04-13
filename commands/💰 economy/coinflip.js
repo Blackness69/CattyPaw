@@ -9,6 +9,12 @@ module.exports = {
   description: 'Make a coinflip bet',
   async execute({ args, msg }) {
       try {
+        const existingUser = await User.findOne({ userId: msg.author.id });
+
+        if (!existingUser) {
+          return msg.reply(`${msg.author.displayName}, Heyy! You have to register your account first. Use \`\`${prefix} start\`\` to register now.`);
+        }
+        
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
       if (cooldown && cooldown.cooldownExpiration > Date.now()) {
@@ -49,7 +55,6 @@ module.exports = {
         betLabel = 'heads'; // Adjusted to show 'heads' explicitly
       }
 
-      const existingUser = await User.findOne({ userId: user.id });
       const currentBalance = existingUser.balance;
 
       if (currentBalance < amount) {

@@ -10,6 +10,11 @@ module.exports = {
   async execute({ args, msg, client }) {
     try {
       const user = await User.findOne({ userId: msg.author.id });
+      
+      if (!user) {
+        return msg.reply(`${msg.author.displayName}, Heyy! You have to register your account first. Use \`\`${prefix} start\`\` to register now.`);
+      }
+      
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
       if (!user || user.wallet < 10) {

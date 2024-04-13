@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const { prefix } = require('../config');
 const ms = require('pretty-ms');
 const {db} = require('../db.js');
