@@ -12,7 +12,7 @@ module.exports = {
         const existingUser = await User.findOne({ userId: msg.author.id });
 
         if (!existingUser) {
-          return msg.reply(`${msg.author.displayName}, Heyy! You have to register your account first. Use \`\`${prefix} start\`\` to register now.`);
+          return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
         }
         
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
@@ -21,7 +21,11 @@ module.exports = {
         const timeLeft = Math.floor((cooldown.cooldownExpiration - Date.now()) / 1000); // Convert to seconds
 
         // Send cooldown message with remaining time using Discord time formatting
-        return msg.reply(`**${msg.author.displayName}**, hey slowdown! You can use this command again <t:${Math.floor(Date.now() / 1000) + timeLeft}:R>.`);
+        return msg.reply(`⏳ | **${msg.author.displayName}**, Hang tight! You can use this command again **<t:${Math.floor(Date.now() / 1000) + timeLeft}:R>**.`).then((message) => {
+          setTimeout(() => {
+            message.delete();
+          }, 3000)
+        });
       }
 
       const timeout = 20000; // 20 seconds in milliseconds

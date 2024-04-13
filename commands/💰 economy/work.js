@@ -19,7 +19,11 @@ module.exports = {
         const timeLeft = Math.floor((cooldown.cooldownExpiration - Date.now()) / 1000); // Convert to seconds
 
         // Send cooldown message with remaining time using Discord time formatting
-        return msg.reply(`**${msg.author.displayName}**, hey slowdown! You can use this command again <t:${Math.floor(Date.now() / 1000) + timeLeft}:R>.`);
+        return msg.reply(`⏳ | **${msg.author.displayName}**, Hang tight! You can use this command again **<t:${Math.floor(Date.now() / 1000) + timeLeft}:R>**.`).then((message) => {
+          setTimeout(() => {
+            message.delete();
+          }, 3000)
+        });
       }
 
       const randomOutcome = Math.random() < 0.5 ? 'win' : 'lose';
@@ -27,13 +31,13 @@ module.exports = {
 
       if (randomOutcome === 'win') {
         const randomCoins = Math.floor(Math.random() * (801 - 200)) + 200; // Random number between 200 and 800
-        message = `You worked and got ${randomCoins.toLocaleString()} ${currency} coins.`;
+        message = `You worked and got **__${randomCoins.toLocaleString()}__** ${currency} coins.`;
         await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: randomCoins } });
       } else {
         message = 'You worked and got nothing. Better luck next time!';
       }
 
-      const timeout = 1000; // 1 minute cooldown in milliseconds
+      const timeout = 60000; // 1 minute cooldown in milliseconds
       await CooldownWork.findOneAndUpdate({ userId: msg.author.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });
 
       return msg.reply(message);

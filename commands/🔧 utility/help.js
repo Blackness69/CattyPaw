@@ -71,7 +71,7 @@ module.exports = {
 const collector = response.createMessageComponentCollector({time: 150000 });
       collector.on('collect', async i => {
         if(i.customId !== 'helpCommand') return;
-        if(i.user.id !== msg.author.id) return i.reply({ content: `That's not your help menu! Create one with ${prefix}help`, ephemeral: true });   
+        if(i.user.id !== msg.author.id) return i.reply({ content: `That's not your help menu! Create one with ${prefix} help`, ephemeral: true });   
         const value = i.values[0]
         if (value !== 'homepage') {
           await i.update({ embeds: [embeds[value]], components: [row] });

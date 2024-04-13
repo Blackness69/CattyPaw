@@ -10,7 +10,7 @@ module.exports = {
       const user = await User.findOne({ userId: msg.author.id });
 
       if (!user) {
-        return await msg.reply(`:ribbon: You didn't have a account yet, create one with \`\`${prefix} start\`\` command.`);
+        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
       }
 
       let cooldown = await Cooldown.findOne({ userId: msg.author.id });
@@ -39,7 +39,7 @@ module.exports = {
         { upsert: true, new: true }
       );
 
-      await msg.reply(`You have claimed your daily **__${randomReward}__** ${currency} coins.`)
+      await msg.reply(`You have claimed your daily **__${randomReward.toLowereCase()}__** ${currency} coins.`)
     } catch (err) {
       console.error('Daily Reward Error', err);
       msg.reply('An error ocurred while processing your daily.');

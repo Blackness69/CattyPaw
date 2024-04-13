@@ -5,7 +5,8 @@ const Discord = require('discord.js');
 const client = require(process.cwd() + '/index.js')
 
 client.on("messageCreate", async (msg) => {
-  if(!msg.content) return;
+  if(!msg.content || msg.author.bot) return;
+
   const botMention = msg.content === `<@${client.user.id}>`;
   if (botMention) {
      msg.reply(`Who pinged me? Oh hey ${msg.author.displayName}! Nice to meet you <3`);

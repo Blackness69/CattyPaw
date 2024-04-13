@@ -14,7 +14,7 @@ module.exports = {
         await msg.reply(`Your account balance is **__${formattedBalance}__** ${currency} coins.`);
         
       } else {
-        await msg.reply(`You don\'t have an account yet. Create one with  \`\`${prefix}\`\` start command.`)
+        await msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
       }
     } catch (err) {
       console.error('Error while checking balance', err);

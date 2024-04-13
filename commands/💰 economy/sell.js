@@ -5,14 +5,14 @@ const { prefix, currency } = require('../../config.js');
 
 const animalPrices = {
   '🦓': 20,
-  '🐅': 30,
-  '🐘': 50,
+  '🐅': 150,
+  '🐘': 100,
   '🦒': 40,
   '🐈': 15,
-  '🐄': 25,
+  '🐄': 20,
   '🐀': 10,
   '🐶': 35,
-  '🐉': 45,
+  '🐉': 999,
 };
 
 function getAnimalEmoji(name) {
@@ -36,8 +36,9 @@ module.exports = {
   async execute({ args, client, msg }) {
     try {
       const user = await User.findOne({ userId: msg.author.id });
+      
       if (!user) {
-        return msg.reply("You don't have any animals to sell. Go hunting with the `hunt` command!");
+        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
       }
 
       let huntedAnimals = (await Hunt.findOne({ userId: msg.author.id }))?.huntedAnimals || [];
