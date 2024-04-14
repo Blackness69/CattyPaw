@@ -16,7 +16,7 @@ module.exports = {
         bank = await Bank.create({ userId: msg.author.id, balance: 0 });
       }
 
-      const bankBalance = bank.balance;
+      const bankBalance = bank ? bank.balance : 0;
 
       msg.reply(`Your bank balance is **${bankBalance.toLocaleString()}** CP coins.`);
     } catch (error) {
