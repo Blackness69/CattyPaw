@@ -1,6 +1,7 @@
 const { ActivityType, ChannelType } = require('discord.js');
 const colors = require('colors');
 var AsciiTable = require('ascii-table');
+const { AutoPoster } = require('topgg-autoposter');
 var table = new AsciiTable();
 table.setHeading('Mongo Database', 'Stats').setBorder('|', '=', "0", "0");
 const mongoose = require('mongoose');
@@ -36,5 +37,12 @@ client.on("ready", async (client) => {
     } else {
       console.log(colors.red(`Client not found`));
     console.log(colors.red('0===========================0'));
-    } 
+    }
+  const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMjk0MzgzMjEzOTUxMDk5MjkiLCJib3QiOnRydWUsImlhdCI6MTcxMzI4OTA0OX0.CO1zmripuT5D-pWDuUbbEDpt4YYcLCIcB9V8Y0_0IG4', client);
+
+  ap.on('posted', () => {
+    console.log(colors.blue(`Stats posted on top.gg`));
+    
+    console.log(colors.blue('0===========================0'));
+  });
 });

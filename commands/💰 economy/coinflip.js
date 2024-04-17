@@ -1,6 +1,6 @@
 const { prefix, currency } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
-const User = require('../../Schemas/economy/userSchemaq');
+const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
 
 module.exports = {
