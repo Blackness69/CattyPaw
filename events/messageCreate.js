@@ -13,7 +13,6 @@ client.on("messageCreate", async msg => {
   if (botMention) {
     return msg.reply(`Who pinged me? Oh hey ${msg.author.displayName}! Nice to meet you <3`);
   }
-
   if (!msg.content.toLowerCase().startsWith(prefix) || msg.author.bot) return;
 
   const args = msg.content.slice(prefix.length).trim().split(/ +/);
