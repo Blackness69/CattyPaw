@@ -21,7 +21,7 @@ module.exports = {
 
     const user = await User.findOne({ userId: msg.author.id });
     if (!user || user.balance < amount) {
-      return msg.reply('You don\'t have enough CP coins to give.');
+      return msg.reply(`You don't have enough ${currency} CP coins to give.`);
     }
 
     const targetUser = await User.findOne({ userId: member.id });
@@ -45,7 +45,7 @@ module.exports = {
 
     const confirmEmbed = new EmbedBuilder()
     .setTitle('Give Confirmation')
-    .setDescription(`${msg.author}, are you sure you want to give ${amount.toLocaleString()} CP coins to ${member}? You can't undo it later.`)
+    .setDescription(`${msg.author}, are you sure you want to give **__${amount.toLocaleString()}__** ${currency} CP coins to ${member}? You can't undo it later.`)
     
     const confirmMsg = await msg.reply({
       embeds: [confirmEmbed],
@@ -53,7 +53,7 @@ module.exports = {
     });
 
     const filter = i => i.user.id === msg.author.id;
-    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 15000 });
+    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 35000 });
 
     collector.on('collect', async i => {
       if (i.customId === 'confirm_give') {
@@ -62,7 +62,7 @@ module.exports = {
         await user.save();
         await targetUser.save();
         await confirmMsg.edit({
-          content: `${member}, ${msg.author} gave you ${amount.toLocaleString()}!`,
+          content: `${member}, ${msg.author} gave you **__${amount.toLocaleString()}__** ${currency} CP coins!`,
           components: [],
         });
       } else if (i.customId === 'cancel_give') {

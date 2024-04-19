@@ -31,8 +31,8 @@ module.exports = {
 
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
-      if (!user || user.wallet < 10) {
-        return msg.reply(`You don't have enough ${currency} coins to go for a hunt.`);
+      if (!user || user.balance < 10) {
+        return msg.reply(`You don't have enough ${currency} CP coins to go for a hunt.`);
       }
 
       if (cooldown && cooldown.cooldownExpiration > Date.now()) {
@@ -47,7 +47,7 @@ module.exports = {
       // Select a random animal based on their probabilities
       const randomAnimal = getRandomAnimal();
 
-      msg.reply(`You spent 10 ${currency} coins and go to hunting. And you caught\n${randomAnimal}`);
+      msg.reply(`You spent 10 ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
 
       // Save the hunted animal to the database
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals: randomAnimal } }, { upsert: true });

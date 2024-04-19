@@ -1,86 +1,125 @@
 const { EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
+const Cooldown = require('../../Schemas/cooldown/CooldownSlot');
+const ms = require('pretty-ms');
+const { currency, prefix } = require('../../config.js');
 
 module.exports = {
   name: 'slot',
+  aliases: ['s'],
   description: 'Play a slot machine game.',
   async execute({ msg, args }) {
-    const fruits = ['🍎', '🍇', '🍒', '🍓'];
-    let betAmount = parseInt(args[0]) || 0;
-    const maxBet = 250000; // Max bet amount
+    try {
+      const existingUser = await User.findOne({ userId: msg.author.id });
 
-    if (betAmount <= 0 || isNaN(betAmount)) {
-      return msg.reply('Please enter a valid bet amount.');
-    }
-
-    // Adjust bet amount to the maximum allowed if it exceeds the maximum
-    if (betAmount > maxBet) {
-      betAmount = maxBet;
-    }
-
-    const user = await User.findOne({ userId: msg.author.id });
-
-    if (!user) {
-      return msg.reply(`Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
-    }
-
-    if (user.balance < betAmount) {
-      return msg.reply('You don\'t have enough CP coins to place this bet.');
-    }
-
-    const outcomeMessage = await msg.reply(`[🎰] [🎰] [🎰]`);
-
-    const outcome = [];
-
-    // Randomizing the outcome after 5 seconds
-    setTimeout(() => {
-      for (let i = 0; i < 3; i++) {
-        const randomIndex = Math.floor(Math.random() * fruits.length);
-        outcome.push(fruits[randomIndex]);
+      if (!existingUser) {
+        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
       }
 
-      const result = outcome.join(' ');
-      const embed = new EmbedBuilder()
+      const cooldown = await Cooldown.findOne({ userId: msg.author.id });
+
+      if (cooldown && cooldown.cooldownExpiration > Date.now()) {
+        const timeLeft = Math.floor((cooldown.cooldownExpiration - Date.now()) / 1000); // Convert to seconds
+
+        // Send cooldown message with remaining time using Discord time formatting
+        return msg.reply(`⏳ | **${msg.author.displayName}**, Hang tight! You can use this command again **<t:${Math.floor(Date.now() / 1000) + timeLeft}:R>**.`).then((message) => {
+          setTimeout(() => {
+            message.delete();
+          }, 3000)
+        });
+      }
+
+      const timeout = 20000; // 20 seconds in milliseconds
+
+      if (!args[0]) {
+        return msg.reply(`Wrong argument! Usage: \`\`${prefix} slot <amount>\`\``);
+      }
+
+      const user = msg.author;
+      let amount = args[0].toLowerCase() === 'all' ? (await User.findOne({ userId: user.id })).balance : parseInt(args[0]);
+
+      amount = Math.min(amount, 250000);
+
+      if (isNaN(amount) || amount <= 0) {
+        return msg.reply('Amount must be a positive number');
+      }
+
+      const fruits = ['🍎', '🍇', '🍒', '🍓'];
+
+      const currentBalance = existingUser.balance;
+
+      if (currentBalance < amount) {
+        return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
+      }
+
+      const outcomeMessage = new EmbedBuilder()
         .setTitle('Slot Machine')
-        .setDescription(result)
-        .addField('Outcome', result)
-        .setColor('#FFFF00')
-        .setTimestamp();
+        .setColor('#ffffff')
+        .setTimestamp()
+        .setDescription(`[${fruits[Math.floor(Math.random() * fruits.length)]}] [${fruits[Math.floor(Math.random() * fruits.length)]}] [${fruits[Math.floor(Math.random() * fruits.length)]}]\nYou bet **__${amount.toLocaleString()}__** ${currency} CP coins and...`);
 
-      outcomeMessage.edit({ embeds: [embed] });
+      const sentMessage = await msg.reply({ embeds: [outcomeMessage] });
 
-      const winnings = calculateWinnings(outcome, betAmount);
+      // Randomizing the outcome after 5 seconds
+      let interval;
+      setTimeout(async () => {
+        clearInterval(interval); // Stop the scrolling animation
+        const outcome = [];
+        for (let i = 0; i < 3; i++) {
+          const randomIndex = Math.floor(Math.random() * fruits.length);
+          outcome.push(fruits[randomIndex]);
+        }
 
-      if (winnings > 0) {
-        user.balance += winnings;
-        user.save();
-        msg.reply(`Congratulations! You won ${winnings.toLocaleString()} CP coins.`);
-      } else {
-        msg.reply('Better luck next time!');
-      }
-    }, 5000);
+        const result = outcome.map(fruit => `[${fruit}]`).join(' ');
 
-    // Updating the slot machine every second
-    let index = 0;
-    setInterval(() => {
-      index = (index + 1) % fruits.length;
-      const newSlot = `[${fruits[index]}] [${fruits[(index + 1) % fruits.length]}] [${fruits[(index + 2) % fruits.length]}]`;
-      outcomeMessage.edit(newSlot);
-    }, 1000);
+        const winnings = calculateWinnings(outcome, amount);
+
+        if (winnings > 0) {
+          existingUser.balance += winnings;
+          existingUser.save();
+          outcomeMessage.setDescription(`${result}\nCongratulations! You won **__${winnings.toLocaleString()}__** ${currency} CP coins :D`);
+        } else {
+          // Deduct the bet amount from user's balance
+          existingUser.balance -= amount;
+          existingUser.save();
+          outcomeMessage.setDescription(`${result}\nYou lost **__${amount.toLocaleString()}__** ${currency} CP coins! Better luck next time :c`);
+        }
+        await sentMessage.edit({ embeds: [outcomeMessage] });
+      }, 5000);
+
+      // Updating the slot machine every second until outcome is determined
+      let index = 0;
+      interval = setInterval(() => {
+        index = (index + 1) % fruits.length;
+        const newSlot = `[${fruits[index]}] [${fruits[(index + 1) % fruits.length]}] [${fruits[(index + 2) % fruits.length]}]\nYou bet **__${amount.toLocaleString()}__** ${currency} CP coins and...`;
+        outcomeMessage.setDescription(newSlot);
+        sentMessage.edit({ embeds: [outcomeMessage] });
+      }, 1000);
+
+      // Set cooldown
+      await Cooldown.findOneAndUpdate({ userId: user.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });
+
+    } catch (error) {
+      console.error(error);
+      msg.reply('An error occurred while processing your request.');
+    }
   },
 };
+
+const fruits = ['🍎', '🍇', '🍒', '🍓'];
 
 function calculateWinnings(outcome, betAmount) {
   const strawberryProbability = 0.05;
   const strawberryMultiplier = 4;
   const otherFruitsMultiplier = 2;
 
-  if (outcome.includes('🍓') && Math.random() < strawberryProbability) {
-    return betAmount * strawberryMultiplier;
-  } else if (outcome.every(fruit => fruit === '🍓')) {
-    return betAmount * strawberryMultiplier;
-  } else if (outcome.every(fruit => fruits.includes(fruit))) {
-    return betAmount * otherFruitsMultiplier;
+  // Check if all three fruits are the same
+  if (outcome[0] === outcome[1] && outcome[1] === outcome[2]) {
+    if (outcome.includes('🍓') && Math.random() < strawberryProbability) {
+      return betAmount * strawberryMultiplier;
+    } else {
+      return betAmount * otherFruitsMultiplier;
+    }
   } else {
     return 0;
   }

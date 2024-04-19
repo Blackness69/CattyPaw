@@ -43,7 +43,7 @@ module.exports = {
 
       let huntedAnimals = (await Hunt.findOne({ userId: msg.author.id }))?.huntedAnimals || [];
       if (huntedAnimals.length === 0) {
-        return msg.reply(`You don't have any animals to sell. Go hunting with the \`\`${prefix} hunt\`\` command!`);
+        return msg.reply(`You don't have any animals to sell. Go for hunting with the \`\`${prefix} hunt\`\` command!`);
       }
 
       if (args.includes('all')) {
@@ -54,7 +54,7 @@ module.exports = {
         }
         await Hunt.findOneAndUpdate({ userId: msg.author.id }, { huntedAnimals: [] });
         await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: totalPrice } });
-        return msg.reply(`You sold all your animals for a total of ${totalPrice} ${currency} coins.`);
+        return msg.reply(`You sold all of your animals for a total of **__${totalPrice.toLocaleString()}__** ${currency} CP coins.`);
       }
 
       const [animalOrName, count] = args;
@@ -82,9 +82,9 @@ module.exports = {
       await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: totalPrice } });
 
       if (sellCount === 1) {
-        return msg.reply(`You sold 1 ${animal} for ${price} ${currency} coins.`);
+        return msg.reply(`You sold 1 ${animal} for **__${price.toLocaleString()}__** ${currency} CP coins.`);
       } else {
-        return msg.reply(`You sold ${sellCount} ${animal}(s) for a total of ${totalPrice} ${currency} coins.`);
+        return msg.reply(`You sold ${sellCount} ${animal}(s) for a total of **__${totalPrice.toLocaleString()}__** ${currency} CP coins.`);
       }
 
     } catch (error) {

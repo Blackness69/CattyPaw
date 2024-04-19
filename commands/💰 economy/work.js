@@ -31,7 +31,7 @@ module.exports = {
 
       if (randomOutcome === 'win') {
         const randomCoins = Math.floor(Math.random() * (801 - 200)) + 200; // Random number between 200 and 800
-        message = `You worked and got **__${randomCoins.toLocaleString()}__** ${currency} coins.`;
+        message = `You worked and got **__${randomCoins.toLocaleString()}__** ${currency} CP coins.`;
         await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: randomCoins } });
       } else {
         message = 'You worked and got nothing. Better luck next time!';

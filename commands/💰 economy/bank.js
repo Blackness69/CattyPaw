@@ -1,5 +1,6 @@
 const UserAccount = require('../../Schemas/economy/userSchema');
 const Bank = require('../../Schemas/economy/bankSchema');
+const { currency } = require('../../config.js');
 
 module.exports = {
   name: 'bank',
@@ -11,14 +12,12 @@ module.exports = {
         return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
       }
 
-      let bank = await Bank.findOne({ userId: msg.author.id });
-      if (!bank) {
-        bank = await Bank.create({ userId: msg.author.id, balance: 0 });
-      }
+      const bank = await Bank.findOne({ userId: msg.author.id });
 
-      const bankBalance = bank ? bank.balance : 0;
+      // If bank balance is null or undefined, set it to 0
+      const bankBalance = bank ? (bank.balance || 0) : 0;
 
-      msg.reply(`Your bank balance is **${bankBalance.toLocaleString()}** CP coins.`);
+      msg.reply(`Your bank balance is **__${bankBalance.toLocaleString()}__** ${currency} CP coins.`);
     } catch (error) {
       console.error('Bank error', error);
       msg.reply('An error occurred while checking your bank balance!');

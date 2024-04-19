@@ -1,7 +1,7 @@
-const {readdirSync} = require('fs')
+const {readFileSync} = require('fs')
 module.exports = {
   prefix: "cp",
-  token: process.env.token || readdirSync('token.txt', 'utf-8'),
+  token: process.env.token || readFileSync('token.txt', 'utf-8'),
   clientId: process.env.CLIENT_ID,
   ownerIds: "1081995719210172497",
   avatarURL: "",

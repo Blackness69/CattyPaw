@@ -24,6 +24,7 @@ const client = new Client({
 
 module.exports = client;
 
+client.cooldowns = new Map();
 client.commands = new Collection();
 client.slashCommands = new Collection();
 client.aliases = new Collection();

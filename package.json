@@ -13,6 +13,7 @@
     "@types/node": "^18.0.6",
     "ascii-table": "^0.0.9",
     "better-sqlite3": "^9.5.0",
+    "canvafy": "^7.1.0",
     "colors": "^1.4.0",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",

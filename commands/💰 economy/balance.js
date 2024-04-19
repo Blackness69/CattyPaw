@@ -11,7 +11,7 @@ module.exports = {
 
       if (existingUser) {
         const formattedBalance = existingUser.balance.toLocaleString();  
-        await msg.reply(`Your account balance is **__${formattedBalance}__** ${currency} coins.`);
+        await msg.reply(`Your account balance is **__${formattedBalance}__** ${currency} CP coins.`);
         
       } else {
         await msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);

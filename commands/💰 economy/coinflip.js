@@ -62,11 +62,11 @@ module.exports = {
       const currentBalance = existingUser.balance;
 
       if (currentBalance < amount) {
-        return msg.reply(`You don't have enough ${currency} coins to make that bet`);
+        return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
       }
 
       // Send the initial message indicating the user's choice and the amount bet
-      const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **${amount.toLocaleString()}** ${currency} coins`);
+      const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
 
       setTimeout(async () => {
         const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
@@ -92,9 +92,9 @@ module.exports = {
 
         // Edit the initial message to reveal the outcome
         if (outcome === 'won') {
-          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **${winnings.toLocaleString()}** ${currency} coins`);
+          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **__${winnings.toLocaleString()}__** ${currency} CP coins`);
         } else {
-          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and **${outcome}** **${amount.toLocaleString()}** ${currency} coins`);
+          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and **${outcome}** **__${amount.toLocaleString()}__** ${currency} CP coins`);
         }
       }, 4000);
 

@@ -54,7 +54,7 @@ module.exports = {
 
         await newUser.save();
 
-        const successMessage = `Your account has been created, starter ${currency} coins: **__1000__**`;
+        const successMessage = `Your account has been created, here is your starter ${currency} CP coins: **__1,000__**`;
 
         await i.update({ content: successMessage, embeds: [] });
         collector.stop();

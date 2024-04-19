@@ -39,7 +39,7 @@ module.exports = {
         { upsert: true, new: true }
       );
 
-      await msg.reply(`You have claimed your daily **__${randomReward.toLowereCase()}__** ${currency} coins.`)
+      await msg.reply(`You have claimed your daily **__${randomReward.toLocaleStringn()}__** ${currency} CP coins.`)
     } catch (err) {
       console.error('Daily Reward Error', err);
       msg.reply('An error ocurred while processing your daily.');
