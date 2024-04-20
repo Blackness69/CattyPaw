@@ -68,8 +68,8 @@ module.exports = {
       // Send the initial message indicating the user's choice and the amount bet
       const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
 
-      setTimeout(async () => {
         const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
+        
         let outcome;
         let winnings = 0;
 
@@ -90,6 +90,7 @@ module.exports = {
 
         await existingUser.save();
 
+      setTimeout(async () => {     
         // Edit the initial message to reveal the outcome
         if (outcome === 'won') {
           initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **__${winnings.toLocaleString()}__** ${currency} CP coins`);
