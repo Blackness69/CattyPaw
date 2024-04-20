@@ -24,7 +24,7 @@ module.exports = {
         return await msg.reply(`You have already claimed your daily, come back after ${timeLeftFormatted}`);
       }
 
-      const randomReward = Math.floor(Math.random() * 3501) + 500; // Random reward between 500 and 4000
+      const randomReward = Math.floor(Math.random() * 4501) + 1000; // Random reward between 100 and 4500
       user.balance += randomReward;
       await user.save();
 
@@ -39,7 +39,7 @@ module.exports = {
         { upsert: true, new: true }
       );
 
-      await msg.reply(`You have claimed your daily **__${randomReward.toLocaleStringn()}__** ${currency} CP coins.`)
+      await msg.reply(`You have claimed your daily **__${randomReward.toLocaleString()}__** ${currency} CP coins.`)
     } catch (err) {
       console.error('Daily Reward Error', err);
       msg.reply('An error ocurred while processing your daily.');
