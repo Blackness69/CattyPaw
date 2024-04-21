@@ -14,6 +14,8 @@ module.exports = {
       return msg.reply(`The current prefix for this server is: \`\`${currentPrefix}\`\``);
     }
 
+    const formattedPrefix = newPrefix.toLowerCase(); // Convert the provided prefix to lowercase
+
     if (!msg.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
       return msg.reply('You do not have admin permission to use this command.');
     }
@@ -24,18 +26,18 @@ module.exports = {
       if (!prefixData) {
         prefixData = await prefixSchema.create({
           guildId: msg.guild.id,
-          prefix: newPrefix
+          prefix: formattedPrefix // Save the lowercase prefix
         });
       } else {
-        if (prefixData.prefix === newPrefix) {
-          return msg.reply(`The prefix "${newPrefix}" is already set in this server.`);
+        if (prefixData.prefix === formattedPrefix) {
+          return msg.reply(`The prefix "${formattedPrefix}" is already set in this server.`);
         }
       }
 
-      prefixData.prefix = newPrefix;
+      prefixData.prefix = formattedPrefix; // Save the lowercase prefix
       await prefixData.save();
 
-      return msg.reply(`Prefix has been changed to: \`\`${newPrefix}\`\``);
+      return msg.reply(`Prefix has been changed to: \`\`${formattedPrefix}\`\``);
     } catch (error) {
       console.error('Error changing prefix:', error);
       return msg.reply('An error occurred while changing the prefix.');
