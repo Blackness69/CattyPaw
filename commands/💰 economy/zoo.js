@@ -1,7 +1,7 @@
 // zoo.js
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 
 module.exports = {
   name: 'zoo',
@@ -9,6 +9,7 @@ module.exports = {
   description: 'See your hunted animals zoo',
   async execute({ args, client, msg }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       
       if (!user) {

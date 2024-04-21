@@ -2,7 +2,7 @@
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownHunt');
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 
 // Define animals with their probabilities (rarity)
 const animals = [
@@ -23,6 +23,7 @@ module.exports = {
   description: 'Hunt for animals and earn FX coins by selling them',
   async execute({ args, msg, client }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
 
       if (!user) {

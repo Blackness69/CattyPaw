@@ -1,13 +1,14 @@
 // work.js
 const CooldownWork = require('../../Schemas/cooldown/CooldownWork');
 const User = require('../../Schemas/economy/userSchema');
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 
 module.exports = {
   name: 'work',
   description: 'Work and earn some CP coins',
   async execute({ args, msg, client }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       const cooldown = await CooldownWork.findOne({ userId: msg.author.id });
 

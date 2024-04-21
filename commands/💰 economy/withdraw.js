@@ -1,6 +1,6 @@
 const UserAccount = require('../../Schemas/economy/userSchema');
 const Bank = require('../../Schemas/economy/bankSchema');
-const { currency, prefix } = require('../../config.js');
+const { currency, getPrefix } = require('../../config.js');
 
 module.exports = {
   name: 'withdraw',
@@ -8,6 +8,7 @@ module.exports = {
   description: 'Withdraw CP coins from your bank.',
   async execute({msg, args}) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await UserAccount.findOne({ userId: msg.author.id });
       if (!user) {
         return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);

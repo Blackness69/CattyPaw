@@ -1,7 +1,7 @@
 // sell.js
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 
 const animalPrices = {
   '🦓': 20,
@@ -35,6 +35,7 @@ module.exports = {
   description: 'Sell animals from your zoo',
   async execute({ args, client, msg }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       
       if (!user) {

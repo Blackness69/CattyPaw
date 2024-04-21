@@ -1,4 +1,4 @@
-const { prefix, currency } = require('../../config.js');
+const { currency } = require('../../config.js');
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
 

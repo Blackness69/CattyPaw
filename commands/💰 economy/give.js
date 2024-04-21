@@ -1,12 +1,19 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
+const { getPrefix, currency } = require('../../config.js');
 
 module.exports = {
   name: 'give',
   description: 'Give CP coins to another user',
   async execute({ msg, args }) {
+    const prefix = await getPrefix(msg.guild.id);
+    const user = await User.findOne({ userId: msg.author.id });
+
+    if (!user) {
+      return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
+    }
     if (!args[0] || !args[1]) {
-      return msg.reply('Please provide the user mention and the amount to give.');
+      return msg.reply('Please provide the user mentioned and the amount to give.');
     }
 
     const member = msg.mentions.members.first();
@@ -19,7 +26,6 @@ module.exports = {
       return msg.reply('Invalid amount. Please provide a positive number.');
     }
 
-    const user = await User.findOne({ userId: msg.author.id });
     if (!user || user.balance < amount) {
       return msg.reply(`You don't have enough ${currency} CP coins to give.`);
     }

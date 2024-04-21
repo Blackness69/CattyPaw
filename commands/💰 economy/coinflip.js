@@ -1,4 +1,4 @@
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
 const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
@@ -10,6 +10,7 @@ module.exports = {
   async execute({ args, msg }) {
       try {
         const existingUser = await User.findOne({ userId: msg.author.id });
+        const prefix = await getPrefix(msg.guild.id);
 
         if (!existingUser) {
           return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);

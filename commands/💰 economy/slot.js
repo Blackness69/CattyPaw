@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownSlot');
 const ms = require('pretty-ms');
-const { currency, prefix } = require('../../config.js');
+const { currency, getPrefix } = require('../../config.js');
 
 module.exports = {
   name: 'slot',
@@ -10,6 +10,7 @@ module.exports = {
   description: 'Play a slot machine game.',
   async execute({ msg, args }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (!existingUser) {

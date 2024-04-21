@@ -35,7 +35,7 @@ module.exports = {
       prefixData.prefix = newPrefix;
       await prefixData.save();
 
-      return msg.reply(`Prefix has been changed to ${newPrefix}`);
+      return msg.reply(`Prefix has been changed to: \`\`${newPrefix}\`\``);
     } catch (error) {
       console.error('Error changing prefix:', error);
       return msg.reply('An error occurred while changing the prefix.');
