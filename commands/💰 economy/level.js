@@ -6,6 +6,7 @@ const { getPrefix } = require('../../config');
 
 module.exports = {
   name: 'level',
+  aliases: ['xp', 'lvl'],
   description: 'Check your level or mentioned user\'s level.',
   async execute({ msg }) {
     try {
