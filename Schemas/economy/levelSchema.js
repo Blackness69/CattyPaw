@@ -1,3 +1,4 @@
+// levelSchema.js
 const { model, Schema } = require('mongoose');
 
 const levelSchema = new Schema({
@@ -8,11 +9,10 @@ const levelSchema = new Schema({
   },
   xp: {
     type: Number,
-    default: 0,
   },
   level: {
     type: Number,
-    default: 1
+    default: 1,
   }
 });
 

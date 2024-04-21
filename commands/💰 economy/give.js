@@ -70,11 +70,13 @@ module.exports = {
         await confirmMsg.edit({
           content: `${member}, ${msg.author} gave you **__${amount.toLocaleString()}__** ${currency} CP coins!`,
           components: [],
+          embeds: [],
         });
       } else if (i.customId === 'cancel_give') {
         await confirmMsg.edit({
           content: 'Give command cancelled.',
           components: [],
+          embeds: [],
         });
       }
       collector.stop();
@@ -85,6 +87,7 @@ module.exports = {
         confirmMsg.edit({
           content: 'Give command timed out. Please try again.',
           components: [],
+          embeds: [],
         });
       }
     });
