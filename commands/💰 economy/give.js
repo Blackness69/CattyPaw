@@ -34,7 +34,7 @@ module.exports = {
         new ButtonBuilder()
           .setCustomId('confirm_give')
           .setLabel('Confirm')
-          .setStyly(ButtonStyle.Success)
+          .setStyle(ButtonStyle.Success)
           .setEmoji('✅'),
         new ButtonBuilder()
           .setCustomId('cancel_give')
