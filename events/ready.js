@@ -38,11 +38,4 @@ client.on("ready", async (client) => {
       console.log(colors.red(`Client not found`));
     console.log(colors.red('0===========================0'));
     }
-  const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMjk0MzgzMjEzOTUxMDk5MjkiLCJib3QiOnRydWUsImlhdCI6MTcxMzI4OTA0OX0.CO1zmripuT5D-pWDuUbbEDpt4YYcLCIcB9V8Y0_0IG4', client);
-
-  ap.on('posted', () => {
-    console.log(colors.blue(`Stats posted on top.gg`));
-    
-    console.log(colors.blue('0===========================0'));
-  });
 });
