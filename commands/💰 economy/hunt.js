@@ -3,6 +3,7 @@ const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownHunt');
 const { getPrefix, currency } = require('../../config.js');
+const { grantXP } = require('../../handlers/xpHandler');
 
 // Define animals with their probabilities (rarity)
 const animals = [
@@ -47,6 +48,9 @@ module.exports = {
 
       // Select a random animal based on their probabilities
       const randomAnimal = getRandomAnimal();
+
+      const xpToAdd = 3;
+      await grantXP(msg.author.id, xpToAdd);
 
       msg.reply(`You spent 10 ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
 

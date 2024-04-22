@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownSlot');
-const ms = require('pretty-ms');
 const { currency, getPrefix } = require('../../config.js');
+const { grantXP } = require('../../handlers/xpHandler');
 
 module.exports = {
   name: 'slot',
@@ -53,6 +53,9 @@ module.exports = {
         return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
       }
 
+      const xpToAdd = 10;
+      await grantXP(msg.author.id, xpToAdd);
+      
       const outcomeMessage = new EmbedBuilder()
         .setTitle('Slot Machine')
         .setColor('#ffffff')

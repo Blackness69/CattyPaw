@@ -2,6 +2,7 @@ const { getPrefix, currency } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
 const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
+const { grantXP } = require('../../handlers/xpHandler');
 
 module.exports = {
   name: 'coinflip',
@@ -66,6 +67,8 @@ module.exports = {
         return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
       }
 
+        const xpToAdd = 10;
+        await grantXP(msg.author.id, xpToAdd);
       // Send the initial message indicating the user's choice and the amount bet
       const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
 

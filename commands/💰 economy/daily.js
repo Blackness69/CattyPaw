@@ -1,6 +1,7 @@
 const { prefix, currency } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownDaily');
 const User = require('../../Schemas/economy/userSchema');
+const { grantXP } = require('../../handlers/xpHandler');
 
 module.exports = {
   name: 'daily',
@@ -38,6 +39,8 @@ module.exports = {
         newCooldown,
         { upsert: true, new: true }
       );
+      const xpToAdd = 5;
+      await grantXP(msg.author.id, xpToAdd);
 
       await msg.reply(`You have claimed your daily **__${randomReward.toLocaleString()}__** ${currency} CP coins.`)
     } catch (err) {

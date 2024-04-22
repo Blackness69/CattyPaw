@@ -2,6 +2,7 @@
 const CooldownWork = require('../../Schemas/cooldown/CooldownWork');
 const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
+const { grantXP } = require('../../handlers/xpHandler');
 
 module.exports = {
   name: 'work',
@@ -27,6 +28,9 @@ module.exports = {
         });
       }
 
+      const xpToAdd = 5;
+      await grantXP(msg.author.id, xpToAdd);
+      
       const randomOutcome = Math.random() < 0.5 ? 'win' : 'lose';
       let message;
 
