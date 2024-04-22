@@ -9,14 +9,14 @@ module.exports = {
   aliases: ['cf'],
   description: 'Make a coinflip bet',
   async execute({ args, msg }) {
-      try {
-        const existingUser = await User.findOne({ userId: msg.author.id });
-        const prefix = await getPrefix(msg.guild.id);
+    try {
+      const existingUser = await User.findOne({ userId: msg.author.id });
+      const prefix = await getPrefix(msg.guild.id);
 
-        if (!existingUser) {
-          return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
-        }
-        
+      if (!existingUser) {
+        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
+      }
+
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
       if (cooldown && cooldown.cooldownExpiration > Date.now()) {
@@ -67,35 +67,45 @@ module.exports = {
         return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
       }
 
-        const xpToAdd = 10;
-        await grantXP(msg.author.id, xpToAdd);
+      const xpToAdd = 17;
+      await grantXP(msg.author.id, xpToAdd);
+
       // Send the initial message indicating the user's choice and the amount bet
-      const initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
+      let initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
+      let dots = '';
 
-        const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
-        
-        let outcome;
-        let winnings = 0;
+      // Animate the initial message with dots
+      const dotInterval = setInterval(() => {
+        dots += '.';
+        initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins${dots}`);
+        if (dots.length === 3) dots = ''; // Reset dots after 4 dots
+      }, 600);
 
-        // Determine the outcome based on the user's bet
-        if (result === userBet) {
-          outcome = 'won';
-          winnings = amount * 2; // User wins double the bet amount
-        } else {
-          outcome = 'lost';
-        }
+      const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
 
-        // Update user balance
-        if (outcome === 'won') {
-          existingUser.balance += winnings - amount; // Add winnings and subtract the initial bet
-        } else {
-          existingUser.balance -= amount; // Deduct the bet amount if lost
-        }
+      let outcome;
+      let winnings = 0;
 
-        await existingUser.save();
+      // Determine the outcome based on the user's bet
+      if (result === userBet) {
+        outcome = 'won';
+        winnings = amount * 2; // User wins double the bet amount
+      } else {
+        outcome = 'lost';
+      }
 
-      setTimeout(async () => {     
-        // Edit the initial message to reveal the outcome
+      // Update user balance
+      if (outcome === 'won') {
+        existingUser.balance += winnings - amount; // Add winnings and subtract the initial bet
+      } else {
+        existingUser.balance -= amount; // Deduct the bet amount if lost
+      }
+
+      await existingUser.save();
+
+      setTimeout(async () => {
+        // Stop the dot animation and edit the initial message to reveal the outcome
+        clearInterval(dotInterval);
         if (outcome === 'won') {
           initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **__${winnings.toLocaleString()}__** ${currency} CP coins`);
         } else {

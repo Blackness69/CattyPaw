@@ -30,7 +30,7 @@ module.exports = {
       }
 
       const avatarURL = targetUser.displayAvatarURL({ format: 'jpg' });
-      const xpNeededForNextLevel = 40 + (user.level - 1) * 40;
+      const xpNeededForNextLevel = 260 + (user.level - 1) * 260;
 
       let backgroundImageURL = 'https://cdn.discordapp.com/attachments/1209078672993165312/1231482598358908968/images_1_3.jpg?ex=66371e8b&is=6624a98b&hm=da84ff6ce1bb8c1e457a9f2c87f5ff1d57d3f41ad42b74afffc82a2d2ee5842c&'; // Set your background image URL here if needed
 
@@ -45,7 +45,7 @@ module.exports = {
         .setBackground('image', backgroundImageURL)
         .setUsername(userData.userName)
         .setBorder('#ffffff')
-        .setBarColor('#0000ff')
+        .setBarColor('#ff0000')
         .setLevel(user.level)
         .setRank(userRank)
         .setCurrentXp(user.xp)

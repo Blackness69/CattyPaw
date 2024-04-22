@@ -20,7 +20,7 @@ const grantXP = async (userId, xpToAdd) => {
 
 // Function to handle level up
 const handleLevelUp = async (msg, user) => {
-  const xpToLevelUp = 40 + (user.level - 1) * 40;
+  const xpToLevelUp = 260 + (user.level - 1) * 260;
   if (user.xp >= xpToLevelUp) {
     user.xp -= xpToLevelUp;
     user.level++;
@@ -28,7 +28,7 @@ const handleLevelUp = async (msg, user) => {
     const cooldownTime = 60000; // 60 seconds cooldown
     client.cooldowns.set(msg.author.id, Date.now() + cooldownTime);
 
-    const balanceToAdd = user.level === 2 ? 15000 : 15000 + (user.level - 2) * 5000;
+    const balanceToAdd = user.level === 2 ? 25000 : 25000 + (user.level - 2) * 5000;
 
     await User.findOneAndUpdate(
       { userId: msg.author.id },
