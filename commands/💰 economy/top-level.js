@@ -3,6 +3,7 @@ const { Top } = require('canvafy');
 
 module.exports = {
     name: 'top-level',
+    aliases: ['lb-level', 'lb-l', 'leaderboard-level', 'lb-lvl', 'lb-xp'],
     description: 'Display the top 10 users globally based on their levels.',
   async execute({msg}) {
 

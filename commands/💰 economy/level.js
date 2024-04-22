@@ -45,7 +45,7 @@ module.exports = {
         .setBackground('image', backgroundImageURL)
         .setUsername(userData.userName)
         .setBorder('#ffffff')
-        .setBarColor('#ff0000')
+        .setBarColor('#0000ff')
         .setLevel(user.level)
         .setRank(userRank)
         .setCurrentXp(user.xp)
