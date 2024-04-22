@@ -1,6 +1,6 @@
 // messageCreate.js
 
-const { getPrefix } = require('../config');
+const { getPrefix, ownerIds } = require('../config');
 const Discord = require('discord.js');
 const client = require(process.cwd() + '/index.js');
 const Level = require('../Schemas/economy/levelSchema');
@@ -23,8 +23,8 @@ client.on("messageCreate", async msg => {
   }
 
   const args = msg.content.slice(prefixLength).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
 
+  const commandName = args.shift().toLowerCase();
   const command = client.commands.get(commandName) || client.commands.get(client.aliases.get(commandName));
   if (!command) return;
 

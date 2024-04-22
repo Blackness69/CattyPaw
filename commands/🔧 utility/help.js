@@ -4,6 +4,7 @@ const {prefix} = require('../../config');
 const {db} = require('../../db.js');
 
 module.exports = {
+  owner: true,
   name: 'help',
   description: 'Shows list of available commands',
   async execute({msg, args, client}) {
