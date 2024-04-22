@@ -1,0 +1,61 @@
+const Level = require('../../Schemas/economy/levelSchema');
+const { Top } = require('canvafy');
+
+module.exports = {
+    name: 'top-level',
+    description: 'Display the top 10 users globally based on their levels.',
+  async execute({msg}) {
+
+    try {
+      const topUsers = await Level.find({}).sort({ level: -1 }).limit(10);
+
+      if (topUsers.length > 0) {
+        const usersData = await Promise.all(topUsers.map(async (user, index) => {
+          // Fetch Discord user data
+          let member;
+          try {
+            member = await msg.client.users.fetch(user.userId);
+          } catch (error) {
+            console.error(`User not found: ${user.userId}`);
+            return null;
+          }
+
+          // Use the username and avatar of the member
+          const username = member.username;
+          const avatar = member.displayAvatarURL({ format: 'png', dynamic: true, size: 128 });
+
+          return {
+            top: index + 1,
+            avatar: avatar,
+            tag: `${username}`,
+            score: user.level, // Assuming level is the score
+          };
+        }));
+
+        // Filter out null entries (users not found)
+        const filteredUsersData = usersData.filter(user => user !== null);
+
+        const top = await new Top()
+          .setOpacity(0.6)
+          .setScoreMessage('Level:')
+          .setabbreviateNumber(false)
+          .setBackground('image', 'https://cdn.discordapp.com/attachments/1228708301936656404/1229029615973171200/asdasdasd.png?ex=662e3206&is=661bbd06&hm=ce851649576f2f3b95f6ac98c31ba8417275ea52471f2354ee9f806b0305c9e1&')
+          .setColors({ box: '#212121', username: '#ffffff', score: '#ffffff', firstRank: '#f7c716', secondRank: '#9e9e9e', thirdRank: '#94610f' })
+          .setUsersData(filteredUsersData)
+          .build();
+
+        msg.reply({
+          files: [{
+            attachment: top,
+            name: `top-${msg.author.id}.png`,
+          }],
+        });
+      } else {
+        msg.reply('No users found.');
+      }
+    } catch (error) {
+      console.error('Error fetching top users:', error);
+      msg.reply('An error occurred while fetching top users.');
+    }
+  },
+};
