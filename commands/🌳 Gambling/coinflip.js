@@ -1,4 +1,4 @@
-const { getPrefix, currency } = require('../../config.js');
+const { getPrefix, currency, coinflip, coinflip2 } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
 const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
@@ -71,15 +71,7 @@ module.exports = {
       await grantXP(msg.author.id, xpToAdd);
 
       // Send the initial message indicating the user's choice and the amount bet
-      let initialMessage = await msg.reply(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins`);
-      let dots = '';
-
-      // Animate the initial message with dots
-      const dotInterval = setInterval(() => {
-        dots += '.';
-        initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and bet **__${amount.toLocaleString()}__** ${currency} CP coins${dots}`);
-        if (dots.length === 3) dots = ''; // Reset dots after 4 dots
-      }, 600);
+      let initialMessage = await msg.reply(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip}`);
 
       const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
 
@@ -103,15 +95,12 @@ module.exports = {
 
       await existingUser.save();
 
-      setTimeout(async () => {
-        // Stop the dot animation and edit the initial message to reveal the outcome
-        clearInterval(dotInterval);
-        if (outcome === 'won') {
-          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and won **__${winnings.toLocaleString()}__** ${currency} CP coins`);
-        } else {
-          initialMessage.edit(`**${user.displayName}**, You choose **${betLabel}** and **${outcome}** **__${amount.toLocaleString()}__** ${currency} CP coins`);
-        }
-      }, 4000);
+      // Edit the initial message to display the outcome and winnings
+      if (outcome === 'won') {
+        initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you won **__${winnings.toLocaleString()}__** ${currency} CP coins.`);
+      } else {
+        initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you ${outcome} **__${amount.toLocaleString()}__** ${currency} CP coins.`);
+      }
 
       // Set cooldown
       await Cooldown.findOneAndUpdate({ userId: user.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });

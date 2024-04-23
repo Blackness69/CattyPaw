@@ -13,7 +13,9 @@ module.exports = {
   clientId: process.env.CLIENT_ID,
   ownerIds: ["1081995719210172497", "1229341293176557570"], // Array of owner IDs
   avatarURL: "",
-  currency: "<:cattypal:1227841175671541801>",
+  currency: "<:cattypal:1232348823729213470>",
+  coinflip: "<a:coinflip:1232349729128579143>",
+  coinflip2: "<:coinflip2:1232351041186697246>",
   mongoURL: "mongodb+srv://Blackness36:Blackness697@cattypal.931cn9t.mongodb.net/",
   YOUTUBE_API_KEY: process.env.YoutubeApiKey
 };
