@@ -17,16 +17,16 @@ module.exports = {
       if (mentionedUser) {
         targetUser = mentionedUser;
       }
-
+      
       // Find the user's level data
       const userData = await User.findOne({ userId: targetUser.id });
       if (!userData) {
         return msg.reply(`${targetUser.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`${prefix} start\`? 🌟`);
       }
 
-      const user = await Level.findOne({ userId: msg.author.id });
+      const user = await Level.findOne({ userId: targetUser.id });
       if (!user) {
-        return msg.reply(`${targetUser.displayName} doesn't have a level yet.`);
+        return msg.reply(`**${targetUser.displayName}** doesn't have a level yet. Try using \`\`${prefix} level\`\` command again to see your level.`);
       }
 
       const avatarURL = targetUser.displayAvatarURL({ format: 'jpg' });
