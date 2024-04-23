@@ -95,12 +95,14 @@ module.exports = {
 
       await existingUser.save();
 
-      // Edit the initial message to display the outcome and winnings
-      if (outcome === 'won') {
-        initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you won **__${winnings.toLocaleString()}__** ${currency} CP coins.`);
-      } else {
-        initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you ${outcome} **__${amount.toLocaleString()}__** ${currency} CP coins.`);
-      }
+      // Edit the initial message to display the outcome and winnings after 4 seconds
+      setTimeout(() => {
+        if (outcome === 'won') {
+          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you won **__${winnings.toLocaleString()}__** ${currency} CP coins.`);
+        } else {
+          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**\nAnd the coin flips ${coinflip2} and you ${outcome} **__${amount.toLocaleString()}__** ${currency} CP coins.`);
+        }
+      }, 4000);
 
       // Set cooldown
       await Cooldown.findOneAndUpdate({ userId: user.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });
