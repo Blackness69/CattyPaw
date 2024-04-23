@@ -17,6 +17,8 @@ module.exports = {
     const categories = []
     for (const command of commands) {
       commandNames.push(`\`${command.name}\``)
+
+      if (command.category.includes('🍀 Developer-only')) continue;
       const name = command.category.split(' ')[1]
       const guildEmoji = client.emojis.cache.get(customEmojis[name])
       const emoji = (guildEmoji ? {name: guildEmoji.name, id: guildEmoji.id, animated: guildEmoji.animated} : false) || {name: command.category.split(' ')[0]} || {name: '❔'}
