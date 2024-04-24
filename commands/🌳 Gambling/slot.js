@@ -56,15 +56,9 @@ module.exports = {
       const xpToAdd = 17;
       await grantXP(msg.author.id, xpToAdd);
 
-      // Deduct or add coins based on the outcome
       const outcome = [];
-      for (let i = 0; i < 3; i++) {
-        const randomIndex = Math.floor(Math.random() * fruits.length);
-        outcome.push(fruits[randomIndex]);
-      }
-
       const winnings = calculateWinnings(outcome, amount);
-
+      
       if (winnings > 0) {
         existingUser.balance += winnings;
         existingUser.save();
@@ -73,7 +67,7 @@ module.exports = {
         existingUser.balance -= amount;
         existingUser.save();
       }
-
+      
       const outcomeMessage = new EmbedBuilder()
         .setTitle('Slot Machine')
         .setColor('#ffffff')
@@ -83,17 +77,33 @@ module.exports = {
       const sentMessage = await msg.reply({ embeds: [outcomeMessage] });
 
       // Randomizing the outcome after 5 seconds
+      let interval;
       setTimeout(async () => {
+        clearInterval(interval); // Stop the scrolling animation
+        for (let i = 0; i < 3; i++) {
+          const randomIndex = Math.floor(Math.random() * fruits.length);
+          outcome.push(fruits[randomIndex]);
+        }
+
         const result = outcome.map(fruit => `[${fruit}]`).join(' ');
+
 
         if (winnings > 0) {
           outcomeMessage.setDescription(`${result}\nCongratulations! You won **__${winnings.toLocaleString()}__** ${currency} CP coins :D`);
         } else {
           outcomeMessage.setDescription(`${result}\nYou lost **__${amount.toLocaleString()}__** ${currency} CP coins! Better luck next time :c`);
         }
-
         await sentMessage.edit({ embeds: [outcomeMessage] });
       }, 5000);
+
+      // Updating the slot machine every second until outcome is determined
+      let index = 0;
+      interval = setInterval(() => {
+        index = (index + 1) % fruits.length;
+        const newSlot = `[${fruits[index]}] [${fruits[(index + 1) % fruits.length]}] [${fruits[(index + 2) % fruits.length]}]\nYou bet **__${amount.toLocaleString()}__** ${currency} CP coins and...`;
+        outcomeMessage.setDescription(newSlot);
+        sentMessage.edit({ embeds: [outcomeMessage] });
+      }, 1000);
 
       // Set cooldown
       await Cooldown.findOneAndUpdate({ userId: user.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true, new: true });
@@ -104,8 +114,6 @@ module.exports = {
     }
   },
 };
-
-const fruits = ['🍎', '🍇', '🍒', '🍓'];
 
 function calculateWinnings(outcome, betAmount) {
   const strawberryProbability = 0.05;
