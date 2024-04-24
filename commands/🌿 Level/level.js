@@ -5,6 +5,7 @@ const canvafy = require('canvafy');
 const { getPrefix } = require('../../config');
 
 module.exports = {
+  usage: `${prefix} level <user> ( <user> is optional )`,
   name: 'level',
   aliases: ['xp', 'lvl'],
   description: 'Check your level or mentioned user\'s level.',

@@ -1,8 +1,10 @@
-const { prefix, currency } = require('../../config.js');
+const { getPrefix, currency } = require('../../config.js');
 const User = require('../../Schemas/economy/userSchema');
 const { grantXP } = require('../../handlers/xpHandler');
+const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
+  usage: `${prefix} balance`,
   name: 'balance',
   aliases: ['bal', 'cash', 'wallet'],
   description: 'Check your account balance.',

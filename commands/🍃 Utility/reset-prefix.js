@@ -1,10 +1,13 @@
 // resetPrefix.js
 const prefixSchema = require('../../Schemas/economy/prefixSchema');
+const { getPrefix } = require('../../config');
 const { PermissionsBitField } = require('discord.js');
+const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
+  usage: `${prefix} reset-prefix`,
   name: 'reset-prefix',
-  description: 'Reset the custom prefix for the bot in the current server',
+  description: 'Reset the custom prefix for the bot in the current server.',
   async execute({ msg }) {
     if (!msg.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
       return msg.reply('You do not have admin permission to use this command.');

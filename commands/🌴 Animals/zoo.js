@@ -2,14 +2,15 @@
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
+const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
+  usage: `${prefix} zoo`,
   name: 'zoo',
   aliases: ['z'],
   description: 'See your hunted animals zoo',
   async execute({ args, client, msg }) {
     try {
-      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       
       if (!user) {

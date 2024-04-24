@@ -3,15 +3,16 @@ const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
 const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
 const { grantXP } = require('../../handlers/xpHandler');
+const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
+  usage: `${prefix} coinflip <amount> <heads/tails>`,
   name: 'coinflip',
   aliases: ['cf'],
   description: 'Make a coinflip bet',
   async execute({ args, msg }) {
     try {
       const existingUser = await User.findOne({ userId: msg.author.id });
-      const prefix = await getPrefix(msg.guild.id);
 
       if (!existingUser) {
         return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);

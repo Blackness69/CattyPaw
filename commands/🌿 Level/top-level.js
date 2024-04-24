@@ -1,7 +1,10 @@
 const Level = require('../../Schemas/economy/levelSchema');
+const { getPrefix } = require('../../config');
 const { Top } = require('canvafy');
+const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
+    usage: `${prefix} top-level`,
     name: 'top-level',
     aliases: ['lb-level', 'lb-l', 'leaderboard-level', 'lb-lvl', 'lb-xp'],
     description: 'Display the top 10 users globally based on their levels.',

@@ -1,8 +1,10 @@
 const UserAccount = require('../../Schemas/economy/userSchema');
 const Bank = require('../../Schemas/economy/bankSchema');
-const{ currency } = require('../../config.js');
+const{ currency, getPrefix } = require('../../config.js');
+const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
+  usage: `${prefix} deposit <amount>`,
   name: 'deposit',
   aliases: ['dep'],
   description: 'Deposit CP coins to your bank.',

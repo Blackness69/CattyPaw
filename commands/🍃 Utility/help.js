@@ -1,10 +1,11 @@
 // commands/help.js
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder } = require('discord.js');
-const {prefix} = require('../../config');
+const {getPrefix} = require('../../config');
 const {db} = require('../../db.js');
+const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
-  owner: true,
+  usage: `${prefix} help`,
   name: 'help',
   description: 'Shows list of available commands',
   async execute({msg, args, client}) {
@@ -28,7 +29,7 @@ module.exports = {
     const embeds = []
     for (const category of categories) {
       const commandsInCategory = commands.filter(command => command.category.split(' ')[1] === category.name)
-      const commandList = commandsInCategory.map(command => ({name: command.name, value: command.description || 'No description.', inline: true}))
+      const commandList = commandsInCategory.map(command => ({name: command.name, value: `${command.description} | \`\`${command.usage}\`\`` || 'None', inline: true}))
       const categoryEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setTitle(`${category.emoji.id ? `<${category.emoji.animated ? 'a' : ''}:${category.emoji.name}:${category.emoji.id}>` : category.emoji.name} ${category.name} Commands`)
