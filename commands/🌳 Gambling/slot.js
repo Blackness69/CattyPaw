@@ -57,8 +57,13 @@ module.exports = {
       await grantXP(msg.author.id, xpToAdd);
 
       const outcome = [];
+      for (let i = 0; i < 3; i++) {
+        const randomIndex = Math.floor(Math.random() * fruits.length);
+        outcome.push(fruits[randomIndex]);
+      }
+
       const winnings = calculateWinnings(outcome, amount);
-      
+
       if (winnings > 0) {
         existingUser.balance += winnings;
         existingUser.save();
@@ -67,12 +72,12 @@ module.exports = {
         existingUser.balance -= amount;
         existingUser.save();
       }
-      
+
       const outcomeMessage = new EmbedBuilder()
         .setTitle('Slot Machine')
         .setColor('#ffffff')
         .setTimestamp()
-        .setDescription(`[${fruits[Math.floor(Math.random() * fruits.length)]}] [${fruits[Math.floor(Math.random() * fruits.length)]}] [${fruits[Math.floor(Math.random() * fruits.length)]}]\nYou bet **__${amount.toLocaleString()}__** ${currency} CP coins and...`);
+        .setDescription(`[${outcome[0]}] [${outcome[1]}] [${outcome[2]}]\nYou bet **__${amount.toLocaleString()}__** ${currency} CP coins and...`);
 
       const sentMessage = await msg.reply({ embeds: [outcomeMessage] });
 
@@ -80,19 +85,15 @@ module.exports = {
       let interval;
       setTimeout(async () => {
         clearInterval(interval); // Stop the scrolling animation
-        for (let i = 0; i < 3; i++) {
-          const randomIndex = Math.floor(Math.random() * fruits.length);
-          outcome.push(fruits[randomIndex]);
-        }
 
         const result = outcome.map(fruit => `[${fruit}]`).join(' ');
-
 
         if (winnings > 0) {
           outcomeMessage.setDescription(`${result}\nCongratulations! You won **__${winnings.toLocaleString()}__** ${currency} CP coins :D`);
         } else {
           outcomeMessage.setDescription(`${result}\nYou lost **__${amount.toLocaleString()}__** ${currency} CP coins! Better luck next time :c`);
         }
+
         await sentMessage.edit({ embeds: [outcomeMessage] });
       }, 5000);
 
@@ -122,7 +123,7 @@ function calculateWinnings(outcome, betAmount) {
 
   // Check if all three fruits are the same
   if (outcome[0] === outcome[1] && outcome[1] === outcome[2]) {
-    if (outcome.includes('🍓') && Math.random() < strawberryProbability) {
+    if (outcome[0] === '🍓' && Math.random() < strawberryProbability) {
       return betAmount * strawberryMultiplier;
     } else {
       return betAmount * otherFruitsMultiplier;
