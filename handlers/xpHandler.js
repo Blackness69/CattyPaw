@@ -1,3 +1,5 @@
+// xpHandler.js
+
 const Level = require('../Schemas/economy/levelSchema');
 const canvafy = require('canvafy');
 const User = require('../Schemas/economy/userSchema');
@@ -5,7 +7,7 @@ const client = require(process.cwd() + '/index.js');
 const { currency } = require('../config');
 
 // Function to grant XP to a user
-const grantXP = async (userId, xpToAdd) => {
+const grantXP = async (userId, xpToAdd = 12) => { // Add default value of 4 XP
   let user = await Level.findOne({ userId });
   if (!user) {
     user = await Level.create({
@@ -14,13 +16,13 @@ const grantXP = async (userId, xpToAdd) => {
       level: 1,
     });
   }
-  user.xp += xpToAdd;
+  user.xp += xpToAdd; // Add 4 XP
   await user.save();
 };
 
 // Function to handle level up
 const handleLevelUp = async (msg, user) => {
-  const xpToLevelUp = 260 + (user.level - 1) * 260;
+  const xpToLevelUp = 360 + (user.level - 1) * 360;
   if (user.xp >= xpToLevelUp) {
     user.xp -= xpToLevelUp;
     user.level++;
