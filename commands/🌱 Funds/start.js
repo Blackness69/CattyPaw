@@ -4,7 +4,7 @@ const User = require('../../Schemas/economy/userSchema');
 
 module.exports = {
   name: 'start',
-  description: 'Make your account and start earning PP coins.',
+  description: `Make your account with a bonus of 1,000 ${currency} CP coins and start earning ${currency} CP coins.`,
   async execute({ msg }) {
     try {
       const existingUser = await User.findOne({ userId: msg.author.id });
