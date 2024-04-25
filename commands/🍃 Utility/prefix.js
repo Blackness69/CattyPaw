@@ -2,14 +2,13 @@
 const { getPrefix } = require('../../config.js');
 const prefixSchema = require('../../Schemas/economy/prefixSchema');
 const { PermissionsBitField } = require('discord.js');
-const currentPrefix = await getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${currentPrefix} prefix <new prefix>`,
+  usage: 'cp prefix <new prefix>',
   name: 'prefix',
   description: 'Change the bot prefix.',
   async execute({ args, msg }) {
-
+    const currentPrefix = await getPrefix(msg.guild.id);
     const newPrefix = args[0];
     if (!newPrefix) {
       return msg.reply(`The current prefix for this server is: \`\`${currentPrefix}\`\``);

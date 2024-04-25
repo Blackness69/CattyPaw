@@ -3,15 +3,15 @@ const Cooldown = require('../../Schemas/cooldown/CooldownCoinflip');
 const User = require('../../Schemas/economy/userSchema');
 const ms = require('pretty-ms');
 const { grantXP } = require('../../handlers/xpHandler');
-const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} coinflip <amount> <heads/tails>`,
+  usage: 'cp coinflip <amount> <heads/tails>',
   name: 'coinflip',
   aliases: ['cf'],
   description: 'Make a coinflip bet',
   async execute({ args, msg }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (!existingUser) {

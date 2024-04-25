@@ -2,10 +2,9 @@
 const prefixSchema = require('../../Schemas/economy/prefixSchema');
 const { getPrefix } = require('../../config');
 const { PermissionsBitField } = require('discord.js');
-const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} reset-prefix`,
+  usage: 'cp reset-prefix',
   name: 'reset-prefix',
   description: 'Reset the custom prefix for the bot in the current server.',
   async execute({ msg }) {

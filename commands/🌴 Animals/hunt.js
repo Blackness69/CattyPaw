@@ -4,7 +4,6 @@ const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownHunt');
 const { getPrefix, currency } = require('../../config.js');
 const { grantXP } = require('../../handlers/xpHandler');
-const prefix = getPrefix(msg.guild.id);
 
 // Define animals with their probabilities (rarity)
 const animals = [
@@ -20,12 +19,13 @@ const animals = [
 ];
 
 module.exports = {
-  usage: `${prefix} hunt`,
+  usage: 'cp hunt',
   name: 'hunt',
   aliases: ['h'],
-  description: 'Hunt for animals and earn FX coins by selling them',
+  description: `Hunt for animals and earn ${currency} CP coins by selling them`,
   async execute({ args, msg, client }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
 
       if (!user) {

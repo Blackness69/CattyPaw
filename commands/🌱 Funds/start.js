@@ -1,14 +1,16 @@
-const { currency, getPrefix } = require('../../config.js');
+const { currency } = require('../../config.js');
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
-const prefix = await getPrefix(msg.guild.id);
+const { getPrefix } = require('../../config.js');
 
 module.exports = {
-  usage: `${prefix} start`,
+  usage: 'cp start',
   name: 'start',
   description: `Make your account with a bonus of 1,000 ${currency} CP coins and start earning ${currency} CP coins.`,
   async execute({ msg }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
+
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (existingUser) {
@@ -50,7 +52,7 @@ module.exports = {
 
         const newUser = new User({
           userId: msg.author.id,
-          userName: msg.author.username, // Corrected typo from msg.authir.username
+          userName: msg.author.username,
           balance: 1000,
         });
 

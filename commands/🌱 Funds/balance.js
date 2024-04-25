@@ -1,15 +1,15 @@
 const { getPrefix, currency } = require('../../config.js');
 const User = require('../../Schemas/economy/userSchema');
 const { grantXP } = require('../../handlers/xpHandler');
-const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} balance`,
+  usage: 'cp balance',
   name: 'balance',
   aliases: ['bal', 'cash', 'wallet'],
   description: 'Check your account balance.',
   async execute({msg}) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (existingUser) {

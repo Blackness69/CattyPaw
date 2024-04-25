@@ -2,7 +2,6 @@
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
-const prefix = getPrefix(msg.guild.id);
 const animalPrices = {
   '🦓': 20,
   '🐅': 150,
@@ -31,11 +30,12 @@ function getAnimalEmoji(name) {
 }
 
 module.exports = {
-  usage: `${prefix} sell <animal>`,
+  usage: 'cp sell <animal>',
   name: 'sell',
   description: 'Sell animals from your zoo',
   async execute({ args, client, msg }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       
       if (!user) {

@@ -2,14 +2,14 @@ const { getPrefix, currency } = require('../../config.js');
 const Cooldown = require('../../Schemas/cooldown/CooldownDaily');
 const User = require('../../Schemas/economy/userSchema');
 const { grantXP } = require('../../handlers/xpHandler');
-const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} daily`,
+  usage: 'cp daily',
   name: 'daily',
   description: 'Claim your daily coins.',
   async execute({msg}) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
 
       if (!user) {

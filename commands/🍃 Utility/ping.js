@@ -1,8 +1,7 @@
 const { getPrefix } = require('../../config');
-const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} ping`,
+  usage: 'cp ping',
   name: 'ping',
   description: 'Shows the bot\'s ping.',
   async execute({msg, client}) {

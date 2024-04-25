@@ -3,15 +3,15 @@ const User = require('../../Schemas/economy/userSchema');
 const Cooldown = require('../../Schemas/cooldown/CooldownSlot');
 const { currency, getPrefix } = require('../../config.js');
 const { grantXP } = require('../../handlers/xpHandler');
-const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} slot <amount>`,
+  usage: 'cp slot <amount>',
   name: 'slot',
   aliases: ['s'],
   description: 'Play a slot machine game.',
   async execute({ msg, args }) {
     try {
+      const prefix = await getPrefix(msg.guild.id);
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (!existingUser) {

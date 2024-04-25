@@ -1,15 +1,14 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
-const prefix = await getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} give <amount> <user>`,
+  usage: 'cp give <user> <amount>',
   name: 'give',
   description: 'Give CP coins to another user',
   async execute({ msg, args }) {
     const user = await User.findOne({ userId: msg.author.id });
-
+    const prefix = await getPrefix(msg.guild.id);
     if (!user) {
       return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
     }

@@ -2,10 +2,9 @@
 const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder } = require('discord.js');
 const {getPrefix} = require('../../config');
 const {db} = require('../../db.js');
-const prefix = getPrefix(msg.guild.id);
 
 module.exports = {
-  usage: `${prefix} help`,
+  usage: 'cp help',
   name: 'help',
   description: 'Shows list of available commands',
   async execute({msg, args, client}) {
@@ -13,6 +12,7 @@ module.exports = {
       // all custom emojis to help embed
 
     }
+    const prefix = await getPrefix(msg.guild.id);
     const commands = client.commands.map(command => command)
     const commandNames = []
     const categories = []
@@ -29,7 +29,7 @@ module.exports = {
     const embeds = []
     for (const category of categories) {
       const commandsInCategory = commands.filter(command => command.category.split(' ')[1] === category.name)
-      const commandList = commandsInCategory.map(command => ({name: command.name, value: `${command.description} | \`\`${command.usage}\`\`` || 'None', inline: true}))
+      const commandList = commandsInCategory.map(command => ({name: `${command.name} | \`\`${command.usage}\`\``, value: command.description || 'No description', inline: true}))
       const categoryEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setTitle(`${category.emoji.id ? `<${category.emoji.animated ? 'a' : ''}:${category.emoji.name}:${category.emoji.id}>` : category.emoji.name} ${category.name} Commands`)

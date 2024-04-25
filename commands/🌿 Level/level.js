@@ -5,7 +5,7 @@ const canvafy = require('canvafy');
 const { getPrefix } = require('../../config');
 
 module.exports = {
-  usage: `${prefix} level <user> ( <user> is optional )`,
+  usage: 'cp level <user>',
   name: 'level',
   aliases: ['xp', 'lvl'],
   description: 'Check your level or mentioned user\'s level.',
@@ -62,5 +62,9 @@ module.exports = {
       console.error('Error', error);
       return msg.reply('An error occurred while processing your request.');
     }
+  },
+  usage: async (msg) => {
+    const prefix = await getPrefix(msg.guild.id);
+    return `${prefix} level <user> ( <user> is optional )`;
   },
 };
