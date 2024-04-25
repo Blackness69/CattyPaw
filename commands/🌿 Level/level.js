@@ -63,8 +63,4 @@ module.exports = {
       return msg.reply('An error occurred while processing your request.');
     }
   },
-  usage: async (msg) => {
-    const prefix = await getPrefix(msg.guild.id);
-    return `${prefix} level <user> ( <user> is optional )`;
-  },
 };
