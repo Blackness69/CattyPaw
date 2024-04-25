@@ -21,7 +21,7 @@ module.exports = {
       const termsEmbed = new EmbedBuilder()
         .setColor('#ffffff')
         .setTitle('Terms and services')
-        .setDescription(`Users of **CattyPal** bot must adhere to legal compliance, respect Discord guidelines, maintain transaction integrity, respect intellectual property, and report violations. Failure to comply may result in disciplinary action, including permanent account suspension or termination.\n\nFeel free to join our [Support Server](https://youtube.com/@NotBlackness) and ask for any assistance.`)
+        .setDescription(`Users of **CattyPal** bot must adhere to legal compliance, respect Discord guidelines, maintain transaction integrity, respect intellectual property, and report violations. Failure to comply may result in disciplinary action, including permanent account suspension or termination.\n\nFeel free to join our [Support Server](https://discord.com/invite/z9TuHrPX) and ask for any assistance.`)
         .setTimestamp();
 
       const acceptButton = new ButtonBuilder()

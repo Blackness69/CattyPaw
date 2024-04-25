@@ -27,7 +27,7 @@ const handleLevelUp = async (msg, user) => {
     user.xp -= xpToLevelUp;
     user.level++;
 
-    const cooldownTime = 60000; // 60 seconds cooldown
+    const cooldownTime = 30000; // 30 seconds cooldown
     client.cooldowns.set(msg.author.id, Date.now() + cooldownTime);
 
     const balanceToAdd = user.level === 2 ? 25000 : 25000 + (user.level - 2) * 5000;
