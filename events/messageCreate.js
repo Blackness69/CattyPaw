@@ -1,5 +1,3 @@
-// messageCreate.js
-
 const { getPrefix, ownerIds } = require('../config');
 const Discord = require('discord.js');
 const client = require(process.cwd() + '/index.js');
@@ -18,10 +16,13 @@ client.on("messageCreate", async msg => {
   }
 
   const currentPrefix = (await getPrefix(msg.guild.id)).toLowerCase();
-  if (!msg.content.toLowerCase().startsWith(currentPrefix) && !msg.content.toLowerCase().startsWith("cp") || msg.author.bot) return;
+  const messageContent = msg.content.toLowerCase();
 
-  let prefixLength = msg.content.toLowerCase().startsWith(currentPrefix) ? currentPrefix.length : 2;
-  if (!msg.content.toLowerCase().startsWith(currentPrefix)) {
+  // Check if the message starts with the current prefix or with the default prefix "cp"
+  if (!messageContent.startsWith(currentPrefix) && !messageContent.startsWith("cp")) return;
+
+  let prefixLength = currentPrefix.length;
+  if (!messageContent.startsWith(currentPrefix)) {
     prefixLength = 2; // Default prefix length 'cp'
   }
 
