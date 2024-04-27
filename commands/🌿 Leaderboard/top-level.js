@@ -3,9 +3,9 @@ const { getPrefix } = require('../../config');
 const { Top } = require('canvafy');
 
 module.exports = {
-    usage: 'cp top-level',
+    usage: 'cp top level',
     name: 'top-level',
-    aliases: ['lb-level', 'lb-l', 'leaderboard-level', 'lb-lvl', 'lb-xp'],
+    aliases: ['toplevel', 'top-l', 'topl'],
     description: 'Display the top 10 users globally based on their levels.',
   async execute({msg}) {
 
