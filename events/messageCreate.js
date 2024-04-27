@@ -1,3 +1,4 @@
+// messageCreate.js
 const { getPrefix, ownerIds } = require('../config');
 const Discord = require('discord.js');
 const client = require(process.cwd() + '/index.js');
@@ -15,15 +16,16 @@ client.on("messageCreate", async msg => {
     return msg.reply(`Who pinged me? Oh hey ${msg.author.displayName}! Nice to meet you <3`);
   }
 
-  const currentPrefix = (await getPrefix(msg.guild.id)).toLowerCase();
+  const customPrefix = (await getPrefix(msg.guild.id)).toLowerCase();
+  const defaultPrefix = "cp";
   const messageContent = msg.content.toLowerCase();
 
-  // Check if the message starts with the current prefix or with the default prefix "cp"
-  if (!messageContent.startsWith(currentPrefix) && !messageContent.startsWith("cp")) return;
+  // Check if the message starts with the custom prefix or with the default prefix "cp"
+  if (!messageContent.startsWith(customPrefix) && !messageContent.startsWith(defaultPrefix)) return;
 
-  let prefixLength = currentPrefix.length;
-  if (!messageContent.startsWith(currentPrefix)) {
-    prefixLength = 2; // Default prefix length 'cp'
+  let prefixLength = customPrefix.length;
+  if (!messageContent.startsWith(customPrefix)) {
+    prefixLength = defaultPrefix.length; // Default prefix length 'cp'
   }
 
   const args = msg.content.slice(prefixLength).trim().split(/ +/);
@@ -32,7 +34,7 @@ client.on("messageCreate", async msg => {
   const command = client.commands.get(commandName) || client.commands.get(client.aliases.get(commandName));
   if (command) {
     try {
-      await command.execute({ client, Discord, args, prefix: currentPrefix, msg });
+      await command.execute({ client, Discord, args, prefix: customPrefix, msg });
     } catch (error) {
       console.error(error);
       return msg.reply('There was an error executing that command!');
@@ -42,11 +44,11 @@ client.on("messageCreate", async msg => {
   // Check cooldown for XP from messaging
   const cooldownExpiration = messageCooldowns.get(msg.author.id);
   if (!cooldownExpiration || Date.now() > cooldownExpiration) {
-    // Grant 4 XP for each message sent
+    // Grant 12 XP for each message sent
     await grantXP(msg.author.id);
 
-    // Set cooldown expiration time (60 seconds cooldown)
-    messageCooldowns.set(msg.author.id, Date.now() + 60000);
+    // Set cooldown expiration time (30 seconds cooldown)
+    messageCooldowns.set(msg.author.id, Date.now() + 30000);
   }
 
   // Fetch or create user data from the Level schema
