@@ -3,6 +3,7 @@ const { getPrefix, ownerIds } = require('../config');
 const Discord = require('discord.js');
 const client = require(process.cwd() + '/index.js');
 const Level = require('../Schemas/economy/levelSchema');
+const User = require('../Schemas/economy/userSchema');
 const { grantXP, handleLevelUp } = require('../handlers/xpHandler');
 
 // Cooldowns map to store cooldown expiration time for each user
@@ -41,6 +42,10 @@ client.on("messageCreate", async msg => {
     }
   }
 
+  const existingUser = await User.findOne({ userId: msg.author.id });
+  if (!existingUser) {
+    return;
+  } else {
   // Check cooldown for XP from messaging
   const cooldownExpiration = messageCooldowns.get(msg.author.id);
   if (!cooldownExpiration || Date.now() > cooldownExpiration) {
@@ -63,4 +68,5 @@ client.on("messageCreate", async msg => {
   }
 
   await handleLevelUp(msg, user);
+  }
 });

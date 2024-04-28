@@ -37,5 +37,5 @@ client.on("ready", async (client) => {
     } else {
       console.log(colors.red(`Client not found`));
     console.log(colors.red('0===========================0'));
-    }
+  }
 });
