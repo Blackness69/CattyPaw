@@ -9,7 +9,7 @@ module.exports = {
   async execute({ msg, args }) {
     try {
       if (!ownerIds.includes(msg.author.id)) return;
-      
+
       // Get the user ID from command arguments
       const userId = args[0];
       if (!userId) {
@@ -19,6 +19,9 @@ module.exports = {
       // Fetch the user from Discord
       const user = await msg.client.users.fetch(userId);
 
+      // Get the guilds the user is in
+      const userGuilds = user.guilds.cache.map(guild => `${guild.name} - ${guild.description}`);
+
       // Create an embed to display user information
       const userInfoEmbed = new EmbedBuilder()
         .setColor('#0099ff')
@@ -26,10 +29,11 @@ module.exports = {
         .setThumbnail(user.displayAvatarURL({ dynamic: true }))
         .addFields(
           { name: 'Username', value: `${user.username}`, inline: true },
-          { name: 'userId', value: `${user.id}`, inline: true },
+          { name: 'User ID', value: `${user.id}`, inline: true },
           { name: 'Display Name', value: `${user.displayName}`, inline: true },
-        )
-      
+          { name: 'Guilds', value: userGuilds.join('\n') || 'None', inline: false }
+        );
+
       msg.channel.send({ embeds: [userInfoEmbed] });
     } catch (error) {
       console.error('An error occurred while fetching user information:', error);
