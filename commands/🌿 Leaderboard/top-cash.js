@@ -2,7 +2,7 @@ const User = require('../../Schemas/economy/userSchema');
 const { currency } = require('../../config');
 
 module.exports = {
-  usage: 'cp top cash <limit>',
+  usage: 'cp top-cash <limit>',
   name: 'top-cash',
   aliases: ['topcash', 'top-c', 'topc'],
   description: 'Display the top users based on their balance.',
@@ -16,15 +16,15 @@ module.exports = {
         }
       }
       const topUsers = await User.find().sort({ balance: -1 }).limit(limit);
-      
+
       if (topUsers.length === 0) {
         return msg.reply('No users found.');
       }
-      
+
       // Find the author's rank
       const authorIndex = topUsers.findIndex(user => user.userId === msg.author.id);
       const authorRank = authorIndex !== -1 ? authorIndex + 1 : 'N/A';
-      
+
       let leaderboard = `Top ${limit} Global Users by Balance:\nYour rank is #${authorRank}\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {

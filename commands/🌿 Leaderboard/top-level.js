@@ -42,7 +42,7 @@ module.exports = {
           .setOpacity(0.6)
           .setScoreMessage('Level:')
           .setabbreviateNumber(false)
-          .setBackground('image', 'https://cdn.discordapp.com/attachments/1228708301936656404/1229029615973171200/asdasdasd.png?ex=662e3206&is=661bbd06&hm=ce851649576f2f3b95f6ac98c31ba8417275ea52471f2354ee9f806b0305c9e1&')
+          .setBackground('image', 'https://cdn.discordapp.com/attachments/1233782937795821660/1234108338111778846/images_1_6.jpg?ex=662f8874&is=662e36f4&hm=42586e05d6e3173c037e3718413a7e1f93bea8fee116e1016c0799b03caef75c&')
           .setColors({ box: '#212121', username: '#ffffff', score: '#ffffff', firstRank: '#f7c716', secondRank: '#9e9e9e', thirdRank: '#94610f' })
           .setUsersData(filteredUsersData)
           .build();
