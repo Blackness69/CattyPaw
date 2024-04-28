@@ -15,16 +15,16 @@ module.exports = {
           return msg.reply('Please provide a valid limit of users (1-100) to display.');
         }
       }
+      const topUsers = await User.find().sort({ balance: -1 }).limit(limit);
+      
+      if (topUsers.length === 0) {
+        return msg.reply('No users found.');
+      }
+      
       // Find the author's rank
       const authorIndex = topUsers.findIndex(user => user.userId === msg.author.id);
       const authorRank = authorIndex !== -1 ? authorIndex + 1 : 'N/A';
       
-      const topUsers = await User.find().sort({ balance: -1 }).limit(limit);
-
-      if (topUsers.length === 0) {
-        return msg.reply('No users found.');
-      }
-
       let leaderboard = `Top ${limit} Global Users by Balance:\nYour rank is #${authorRank}\n\n`;
 
       for (let i = 0; i < topUsers.length; i++) {
