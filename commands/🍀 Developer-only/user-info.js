@@ -4,10 +4,11 @@ const { ownerIds } = require('../../config');
 module.exports = {
   usage: 'cp user-info <user_id>',
   name: 'user-info',
-  description: 'Displays information about a user.',
+  aliases: ['ui'],
+  description: 'Displays information about a user (owner only).',
   async execute({ msg, args }) {
     try {
-      if (!ownerIds.include(msg.author.id)) return;
+      if (!ownerIds.includes(msg.author.id)) return;
       
       // Get the user ID from command arguments
       const userId = args[0];
