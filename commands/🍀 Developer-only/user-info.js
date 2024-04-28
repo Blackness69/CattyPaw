@@ -20,7 +20,7 @@ module.exports = {
       const user = await msg.client.users.fetch(userId);
 
       // Get the guilds the user is in
-      const userGuilds = user.guilds.cache.map(guild => `${guild.name} - ${guild.description}`);
+      const userGuilds = msg.client.guilds.cache.filter(guild => guild.members.cache.has(user.id));
 
       // Create an embed to display user information
       const userInfoEmbed = new EmbedBuilder()
@@ -31,7 +31,7 @@ module.exports = {
           { name: 'Username', value: `${user.username}`, inline: true },
           { name: 'User ID', value: `${user.id}`, inline: true },
           { name: 'Display Name', value: `${user.displayName}`, inline: true },
-          { name: 'Guilds', value: userGuilds.join('\n') || 'None', inline: false }
+          { name: 'Guilds', value: userGuilds.map(guild => `${guild.name} - ${guild.description}`).join('\n') || 'None', inline: false }
         );
 
       msg.channel.send({ embeds: [userInfoEmbed] });
