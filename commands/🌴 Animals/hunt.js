@@ -22,7 +22,7 @@ module.exports = {
   usage: 'cp hunt',
   name: 'hunt',
   aliases: ['h'],
-  description: `Hunt for animals and earn ${currency} CP coins by selling them`,
+  description: `Embark on a hunting expedition to capture animals.`,
   async execute({ args, msg, client }) {
     try {
       const prefix = await getPrefix(msg.guild.id);
@@ -46,17 +46,25 @@ module.exports = {
           }, 3000)
         });
       }
+      
+      // Select a random number of animals between 1 and 11
+      const numberOfAnimals = Math.floor(Math.random() * 11) + 1;
 
-      // Select a random animal based on their probabilities
-      const randomAnimal = getRandomAnimal();
+      // Select random animals based on their probabilities
+      const huntedAnimals = [];
+      for (let i = 0; i < numberOfAnimals; i++) {
+        const randomAnimal = getRandomAnimal();
+        huntedAnimals.push(randomAnimal);
+      }
 
+      // Grant XP to the user
       const xpToAdd = 3;
       await grantXP(msg.author.id, xpToAdd);
 
-      msg.reply(`You spent **__30__** ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
+      msg.reply(`You spent **30** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
 
-      // Save the hunted animal to the database
-      await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals: randomAnimal } }, { upsert: true });
+      // Save the hunted animals to the database
+      await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals } }, { upsert: true });
 
       // Deduct coins from the user's wallet
       await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -30 } });
@@ -65,7 +73,7 @@ module.exports = {
       await Cooldown.findOneAndUpdate({ userId: msg.author.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true });
 
     } catch (error) {
-      console.error('An error occurred while processing hunt command:', error);
+      console.error('An error occurred while processing the hunt command:', error);
       msg.reply('An error occurred while processing your request.');
     }
   },
@@ -73,7 +81,7 @@ module.exports = {
 
 // Function to randomly select an animal based on their probabilities
 function getRandomAnimal() {
-  const randomNumber = Math.floor(Math.random() * 11) + 1;
+  const randomNumber = Math.random();
   let cumulativeProbability = 0;
   for (const animal of animals) {
     cumulativeProbability += animal.probability;
