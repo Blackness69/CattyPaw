@@ -22,7 +22,7 @@ module.exports = {
       // Find the user's level data
       const userData = await User.findOne({ userId: targetUser.id });
       if (!userData) {
-        return msg.reply(`${targetUser.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`${prefix} start\`? 🌟`);
+        return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
 
       const user = await Level.findOne({ userId: targetUser.id });

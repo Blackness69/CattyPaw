@@ -10,12 +10,12 @@ module.exports = {
   description: 'Work and earn some CP coins',
   async execute({ args, msg, client }) {
     try {
-      const prefix = await getPrefix(msg.guild.id);
+      const prefix = getPrefix(msg.guild.id);
       const user = await User.findOne({ userId: msg.author.id });
       const cooldown = await CooldownWork.findOne({ userId: msg.author.id });
 
       if (!user) {
-        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
+        return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
 
       if (cooldown && cooldown.cooldownExpiration > Date.now()) {
