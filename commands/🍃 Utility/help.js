@@ -33,7 +33,7 @@ module.exports = {
       const categoryEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setTitle(`${category.emoji.id ? `<${category.emoji.animated ? 'a' : ''}:${category.emoji.name}:${category.emoji.id}>` : category.emoji.name} ${category.name} Commands`)
-        .setDescription(`[Support Server](https://discord.com/invite/yyudU8K6fe)\nMy prefix for this server - ${prefix}\n\nAvailable ${category.name} commands list`)
+        .setDescription(`[Support Server](https://discord.com/invite/yyudU8K6fe)\nMy prefix for this server - \`\`${prefix}\`\`\n\nAvailable ${category.name} commands list`)
         .setAuthor({
           name: msg.guild.name,
           iconURL: msg.guild.iconURL({ dynamic: true })
@@ -68,14 +68,14 @@ module.exports = {
         iconURL: msg.guild.iconURL({ dynamic: true })
       })
       .setFooter({text: `Requested by ${msg.author.tag}`, iconURL: msg.author.displayAvatarURL({ dynamic: true })})
-      .setDescription(`[Support Server](https://discord.com/invite/yyudU8K6fe)\nMy prefix for this server - ${prefix}\n\n${categories.map(({name, emoji}) => `${emoji.id ? `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>` : emoji.name} **${name}**`).join('\n')}`)
+      .setDescription(`[Support Server](https://discord.com/invite/yyudU8K6fe)\nMy prefix for this server - \`\`${prefix}\`\`\n\n${categories.map(({name, emoji}) => `${emoji.id ? `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>` : emoji.name} **${name}**`).join('\n')}`)
       .setTimestamp();
     const response = await msg.channel.send({ embeds: [helpEmbed], components: [row] });
     try {
 const collector = response.createMessageComponentCollector({time: 150000 });
       collector.on('collect', async i => {
         if(i.customId !== 'helpCommand') return;
-        if(i.user.id !== msg.author.id) return i.reply({ content: `That's not your help menu! Create one with ${prefix} help`, ephemeral: true });   
+        if(i.user.id !== msg.author.id) return i.reply({ content: `That's not your help menu! Create one with \`\`cp help\`\``, ephemeral: true });   
         const value = i.values[0]
         if (value !== 'homepage') {
           await i.update({ embeds: [embeds[value]], components: [row] });
