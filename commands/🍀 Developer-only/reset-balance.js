@@ -23,7 +23,7 @@ module.exports = {
         await userData.updateOne({ balance: 0 });
         msg.reply(`Successfully reset the balance of **${user.displayName}**.`);
       } else {
-        msg.reply(`**${user.displayName}** does not have an account yet.`);
+        msg.reply(`**${user.displayName}** doesn't have a account yet.`);
       }
     } catch (error) {
       console.error('Error resetting balance:', error);

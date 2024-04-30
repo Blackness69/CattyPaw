@@ -12,7 +12,7 @@ module.exports = {
       const prefix = await getPrefix(msg.guild.id);
       const user = await UserAccount.findOne({ userId: msg.author.id });
       if (!user) {
-        return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
+        return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
 
       const amount = parseInt(args[0]); 

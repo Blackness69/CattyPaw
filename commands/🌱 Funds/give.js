@@ -10,7 +10,7 @@ module.exports = {
     const user = await User.findOne({ userId: msg.author.id });
     const prefix = await getPrefix(msg.guild.id);
     if (!user) {
-      return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
+     return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
     }
     if (!args[0] || !args[1]) {
       return msg.reply('Please provide the user mentioned and the amount to give.');

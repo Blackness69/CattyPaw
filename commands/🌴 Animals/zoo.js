@@ -14,12 +14,12 @@ module.exports = {
       const user = await User.findOne({ userId: msg.author.id });
       
       if (!user) {
-        return msg.reply(`${msg.author.displayName}, Oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`\`${prefix} start\`\`? 🌟`);
+        return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
       
       const huntedAnimals = (await Hunt.findOne({ userId: msg.author.id }))?.huntedAnimals || [];
       if (huntedAnimals.length === 0) {
-        return msg.reply(`You have not caught any animals yet. Go hunting with the \`\`${prefix} hunt\`\` command!`);
+        return msg.reply(`You have not caught any animals yet. Go hunting with the \`\`cp hunt\`\` command!`);
       }
 
       const uniqueAnimals = [...new Set(huntedAnimals)]; // Get unique animals

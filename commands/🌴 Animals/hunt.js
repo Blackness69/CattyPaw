@@ -29,7 +29,7 @@ module.exports = {
       const user = await User.findOne({ userId: msg.author.id });
 
       if (!user) {
-        return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
+        return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
 
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
@@ -53,7 +53,7 @@ module.exports = {
       const xpToAdd = 3;
       await grantXP(msg.author.id, xpToAdd);
 
-      msg.reply(`You spent 10 ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
+      msg.reply(`You spent **__10__** ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
 
       // Save the hunted animal to the database
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals: randomAnimal } }, { upsert: true });

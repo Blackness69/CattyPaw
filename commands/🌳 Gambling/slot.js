@@ -15,7 +15,7 @@ module.exports = {
       const existingUser = await User.findOne({ userId: msg.author.id });
 
       if (!existingUser) {
-        return msg.reply(`**${targetUser.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
+        return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
       }
 
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
