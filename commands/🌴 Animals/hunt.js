@@ -34,7 +34,7 @@ module.exports = {
 
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
-      if (!user || user.balance < 10) {
+      if (!user || user.balance < 30) {
         return msg.reply(`You don't have enough ${currency} CP coins to go for a hunt.`);
       }
 
@@ -53,15 +53,15 @@ module.exports = {
       const xpToAdd = 3;
       await grantXP(msg.author.id, xpToAdd);
 
-      msg.reply(`You spent **__10__** ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
+      msg.reply(`You spent **__30__** ${currency} CP coins and go for hunting. And you caught\n${randomAnimal}`);
 
       // Save the hunted animal to the database
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals: randomAnimal } }, { upsert: true });
 
       // Deduct coins from the user's wallet
-      await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -10 } });
+      await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -30 } });
 
-      const timeout = 30000; // 30 seconds
+      const timeout = 40000; // 40 seconds
       await Cooldown.findOneAndUpdate({ userId: msg.author.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true });
 
     } catch (error) {
@@ -73,7 +73,7 @@ module.exports = {
 
 // Function to randomly select an animal based on their probabilities
 function getRandomAnimal() {
-  const randomNumber = Math.random();
+  const randomNumber = Math.floor(Math.random() * 11) + 1;
   let cumulativeProbability = 0;
   for (const animal of animals) {
     cumulativeProbability += animal.probability;
