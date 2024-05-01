@@ -9,12 +9,13 @@ module.exports = {
     if (!ownerIds.includes(msg.author.id)) return;
     const user = msg.mentions.members.first();
     if (!user) {
-      user = msg.author;
+      return msg.reply('Please mention a user.')
     }
+    maxLimit = 10000000;
     const amount = parseInt(args[1]);
 
-    if (!amount || amount < 0) {
-      return msg.reply('Please provide a valid amount of coins.');
+    if (!amount || amount < 0 || amount > maxLimit) {
+      return msg.reply(`Please provide a valid amount of coins. You can give 1 to ${maxLimit.toLocaleString()} CP coins`);
     }
 
     const existingUser = await User.findOne({ userId: user.id });
