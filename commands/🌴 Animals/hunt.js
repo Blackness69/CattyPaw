@@ -44,7 +44,7 @@ module.exports = {
       }
 
       // Select a random number of animals between 1 and 11
-      const numberOfAnimals = Math.floor(Math.random() * 11);
+      const numberOfAnimals = Math.floor(Math.random() * 11) + 1;
       
       // Select random animals based on their probabilities
       const huntedAnimals = [];
