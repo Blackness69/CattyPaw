@@ -65,7 +65,7 @@ module.exports = {
       // Deduct coins from the user's wallet
       await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -30 } });
 
-      const timeout = 40000; // 40 seconds
+      const timeout = 30000; // 40 seconds
       await Cooldown.findOneAndUpdate({ userId: msg.author.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true });
 
     } catch (error) {
