@@ -27,9 +27,9 @@ client.on("messageCreate", async msg => {
   let prefixLength = customPrefix.length;
   if (!messageContent.startsWith(customPrefix)) {
     prefixLength = defaultPrefix.length; // Default prefix length 'cp'
-  } else if (customPrefix.includes(client.user.id)) { msg.mentions.users.delete(message.mentions.users.keys().next().value) ;            msg.mentions.members.delete(message.mentions.users.keys().next().value);
+  } else if (customPrefix.includes(client.user.id)) { msg.mentions.users.delete(msg.mentions.users.keys().next().value) ;            msg.mentions.members.delete(msg.mentions.users.keys().next().value);
   }
-    message.mentions.users.delete(message.mentions.users.keys().next().value)
+    msg.mentions.users.delete(msg.mentions.users.keys().next().value)
 
   const args = msg.content.slice(prefixLength).trim().split(/ +/);
 
