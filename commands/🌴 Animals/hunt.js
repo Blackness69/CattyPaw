@@ -7,15 +7,11 @@ const { grantXP } = require('../../handlers/xpHandler');
 
 // Define animals with their probabilities (rarity)
 const animals = [
-  { emoji: '🦓', probability: 0.1 },  // 10% chance
-  { emoji: '🐅', probability: 0.05 }, // 5% chance
-  { emoji: '🐘', probability: 0.05 }, // 5% chance
-  { emoji: '🦒', probability: 0.1 },  // 10% chance
-  { emoji: '🐈', probability: 0.2 },  // 20% chance
-  { emoji: '🐄', probability: 0.2 }, // 20% chance
-  { emoji: '🐀', probability: 0.3 },  // 30% chance
-  { emoji: '🐶', probability: 0.2 },  // 20% chance
-  { emoji: '🐉', probability: 0.01 }, // 1% chance
+  { emojis: ['🐀', '🐄', '🐒', '🐕', '🐥'], probability: 0.8 },  // 80% chance
+  { emojis: ['🐎', '🦊', '🦮', '🦆', '🦥'], probability: 0.06 }, // 60% chance
+  { emojis: ['🦒', '🐑', '🦓', '🦛', '🐪'], probability: 0.4 },  // 40% chance
+  { emojis: ['🐐', '🐼', '🕊️', '🦏', '🐘'], probability: 0.2 },  // 20% chance
+  { emojis: ['🦣', '🐉', '🦖', '🦅', '🦍'], probability: 0.03 }, // 3% chance
 ];
 
 module.exports = {
@@ -46,10 +42,10 @@ module.exports = {
           }, 3000)
         });
       }
-      
-      // Select a random number of animals between 1 and 11
-      const numberOfAnimals = Math.floor(Math.random() * 11) + 1;
 
+      // Select a random number of animals between 1 and 11
+      const numberOfAnimals = Math.floor(Math.random() * 11);
+      
       // Select random animals based on their probabilities
       const huntedAnimals = [];
       for (let i = 0; i < numberOfAnimals; i++) {
@@ -61,7 +57,7 @@ module.exports = {
       const xpToAdd = 3;
       await grantXP(msg.author.id, xpToAdd);
 
-      msg.reply(`You spent **30** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
+      msg.reply(`You spent **__30__** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
 
       // Save the hunted animals to the database
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals } }, { upsert: true });
@@ -86,7 +82,9 @@ function getRandomAnimal() {
   for (const animal of animals) {
     cumulativeProbability += animal.probability;
     if (randomNumber <= cumulativeProbability) {
-      return animal.emoji;
+      const emojis = animal.emojis;
+      const randomIndex = Math.floor(Math.random() * emojis.length);
+      return emojis[randomIndex];
     }
   }
 }

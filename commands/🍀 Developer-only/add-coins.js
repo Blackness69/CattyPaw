@@ -8,7 +8,9 @@ module.exports = {
   async execute({msg, args}) {
     if (!ownerIds.includes(msg.author.id)) return;
     const user = msg.mentions.members.first();
-    if (!user) return msg.reply('Please mention a user');
+    if (!user) {
+      user = msg.author;
+    }
     const amount = parseInt(args[1]);
 
     if (!amount || amount < 0) {
@@ -18,10 +20,7 @@ module.exports = {
     const existingUser = await User.findOne({ userId: user.id });
     if (!existingUser) return msg.reply(`**${user.displayName}** doesn't have a account yet.`);
 
-    await existingUser.findOneAndUpdate(
-      { userId: user.id },
-      { $inc: { balance: amount } },
-    )
+    await existingUser.findOneAndUpdate({ userId: user.id }, { $inc: { balance: amount } });
 
     msg.reply(`Successfully added **__${amount.toLocaleString()}__** ${currency} CP coins to **${user.displayName}**'s balance.`);
   }
