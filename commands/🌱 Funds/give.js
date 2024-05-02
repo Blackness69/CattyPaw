@@ -10,7 +10,7 @@ module.exports = {
     const user = await User.findOne({ userId: msg.author.id });
     const prefix = await getPrefix(msg.guild.id);
     if (!user) {
-     return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`cp start\`? 🌟`);
+      return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`${prefix}start\`? 🌟`);
     }
     if (!args[0] || !args[1]) {
       return msg.reply('Please provide the user mentioned and the amount to give.');
@@ -22,7 +22,7 @@ module.exports = {
     }
 
     const amount = parseInt(args[1]);
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(amount) || amount < 0 || amount > 1000000) {
       return msg.reply('Invalid amount. Please provide a positive number.');
     }
 
@@ -30,9 +30,9 @@ module.exports = {
       return msg.reply(`You don't have enough ${currency} CP coins to give.`);
     }
 
-    const targetUser = await User.findOne({ userId: member.id });
+    const targetUser = await User.findOne({ userId: member.user.id });
     if (!targetUser) {
-      return msg.reply('Target user doesn\'t have a account yet.');
+      return msg.reply('Target user doesn\'t have an account yet.');
     }
 
     const confirmRow = new ActionRowBuilder()
@@ -50,9 +50,9 @@ module.exports = {
       );
 
     const confirmEmbed = new EmbedBuilder()
-    .setTitle('Give Confirmation')
-    .setDescription(`${msg.author}, are you sure you want to give **__${amount.toLocaleString()}__** ${currency} CP coins to ${member}? You can't undo it later.`)
-    
+      .setTitle('Give Confirmation')
+      .setDescription(`${msg.author}, are you sure you want to give **__${amount.toLocaleString()}__** ${currency} CP coins to ${member}? You can't undo it later.`);
+
     const confirmMsg = await msg.reply({
       embeds: [confirmEmbed],
       components: [confirmRow],

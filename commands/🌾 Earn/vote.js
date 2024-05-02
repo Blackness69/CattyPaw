@@ -1,6 +1,5 @@
-const { EmbedBuilder, DMChannel } = require('discord.js');
-const { currency, topggBotApiKey, clientId } = require('../../config');
-const User = require('../../Schemas/economy/userSchema');
+const { EmbedBuilder } = require('discord.js');
+const { topggBotApiKey, clientId } = require('../../config');
 
 module.exports = {
   usage: 'cp vote',
@@ -10,7 +9,7 @@ module.exports = {
     const apiKey = topggBotApiKey;
     const botId = clientId;
     const userId = msg.author.id;
-    
+
     try {
       const response = await fetch(`https://top.gg/api/bots/${botId}/check?userId=${userId}`, {
         headers: {
