@@ -1,4 +1,5 @@
 const User = require('../../Schemas/economy/userSchema');
+const { EmbedBuilder } = require('discord.js');
 const { currency } = require('../../config');
 
 module.exports = {
@@ -8,11 +9,11 @@ module.exports = {
   description: 'Display the top users based on their balance.',
   async execute({ msg, args }) {
     try {
-      let limit = 10;
+      let limit = 5;
       if (args[0]) {
         limit = parseInt(args[0]);
-        if (isNaN(limit) || limit <= 0 || limit > 100) {
-          return msg.reply('Please provide a valid limit of users (1-100) to display.');
+        if (isNaN(limit) || limit <= 0 || limit > 25) {
+          return msg.reply('Please provide a valid limit of users (1-25) to display.');
         }
       }
       const topUsers = await User.find().sort({ balance: -1 }).limit(limit);
@@ -22,19 +23,25 @@ module.exports = {
       }
 
       // Find the author's rank
-      const authorIndex = topUsers.findIndex(user => user.userId === msg.author.id);
-      const authorRank = authorIndex !== -1 ? authorIndex + 1 : 'N/A';
+      const authorData = await User.findOne({ userId: msg.author.id });
+      const authorRank = authorData ? await User.countDocuments({ balance: { $gt: authorData.balance } }) + 1 : 'N/A';
 
-      let leaderboard = `Top ${limit} Global Users by Balance:\nYour rank is #${authorRank}\n\n`;
+      const leaderboard = new EmbedBuilder()
+        .setTitle(`Top ${limit} Global Users by Balance`)
+        .setColor('#0000ff')
+        .setDescription(`Your rank: #${authorRank}`)
+        .setTimestamp();
 
       for (let i = 0; i < topUsers.length; i++) {
         const user = await msg.client.users.fetch(topUsers[i].userId);
-        if (!user) continue; 
+        if (!user) continue;
 
-        leaderboard += `#${i + 1}. **${user.username}** - **__${topUsers[i].balance.toLocaleString()}__** ${currency} CP coins\n--------------------------------------------\n`;
+        leaderboard.addFields(
+          { name: `#${i + 1}. ${user.username}`, value: `Balance: **__${topUsers[i].balance.toLocaleString()}__** ${currency} CP coins`, inline: true },
+        )
       }
 
-      msg.channel.send(leaderboard);
+      msg.reply({ embeds: [leaderboard] });
     } catch (error) {
       console.error('An error occurred while fetching top users:', error);
       msg.reply('An error occurred while fetching top users.');
