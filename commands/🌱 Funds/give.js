@@ -21,10 +21,10 @@ module.exports = {
     if (!member) {
       return msg.reply('User not found.');
     }
-    if (member === msg.author) {
+    if (member && member.id === msg.author.id) {
       return msg.reply("You can't give coins to yourself.");
     }
-    if (member === msg.author.bot) {
+    if (member && member.user.bot) {
       return msg.reply("You can't give coins to bots.");
     }
     
