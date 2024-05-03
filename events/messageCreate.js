@@ -27,11 +27,17 @@ client.on("messageCreate", async msg => {
   let prefixLength = customPrefix.length;
   if (!messageContent.startsWith(customPrefix)) {
     prefixLength = defaultPrefix.length; // Default prefix length 'cp'
-  } else if (customPrefix.includes(client.user.id)) { msg.mentions.users.delete(msg.mentions.users.keys().next().value) ;            msg.mentions.members.delete(msg.mentions.users.keys().next().value);
+  } else if (customPrefix.includes(client.user.id)) { 
+    msg.mentions.users.delete(msg.mentions.users.keys().next().value);            
+    msg.mentions.members.delete(msg.mentions.users.keys().next().value);
   }
-    msg.mentions.users.delete(msg.mentions.users.keys().next().value)
 
-  const args = msg.content.slice(prefixLength).trim().split(/ +/);
+  // Remove mentions from the message content
+  msg.mentions.users.forEach(user => {
+    messageContent = messageContent.replace(`<@${user.id}>`, '').trim();
+  });
+
+  const args = messageContent.slice(prefixLength).trim().split(/ +/);
 
   const commandName = args.shift().toLowerCase();
   const command = client.commands.get(commandName) || client.commands.get(client.aliases.get(commandName));
@@ -48,27 +54,27 @@ client.on("messageCreate", async msg => {
   if (!existingUser) {
     return;
   } else {
-  // Check cooldown for XP from messaging
-  const cooldownExpiration = messageCooldowns.get(msg.author.id);
-  if (!cooldownExpiration || Date.now() > cooldownExpiration) {
-    // Grant 12 XP for each message sent
-    await grantXP(msg.author.id);
+    // Check cooldown for XP from messaging
+    const cooldownExpiration = messageCooldowns.get(msg.author.id);
+    if (!cooldownExpiration || Date.now() > cooldownExpiration) {
+      // Grant 12 XP for each message sent
+      await grantXP(msg.author.id);
 
-    // Set cooldown expiration time (30 seconds cooldown)
-    messageCooldowns.set(msg.author.id, Date.now() + 30000);
-  }
+      // Set cooldown expiration time (30 seconds cooldown)
+      messageCooldowns.set(msg.author.id, Date.now() + 30000);
+    }
 
-  // Fetch or create user data from the Level schema
-  let user = await Level.findOne({ userId: msg.author.id });
+    // Fetch or create user data from the Level schema
+    let user = await Level.findOne({ userId: msg.author.id });
 
-  if (!user) {
-    user = await Level.create({
-      userId: msg.author.id,
-      xp: 0,
-      level: 1,
-    });
-  }
+    if (!user) {
+      user = await Level.create({
+        userId: msg.author.id,
+        xp: 0,
+        level: 1,
+      });
+    }
 
-  await handleLevelUp(msg, user);
+    await handleLevelUp(msg, user);
   }
 });
