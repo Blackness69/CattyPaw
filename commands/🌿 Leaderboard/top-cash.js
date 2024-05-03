@@ -28,7 +28,7 @@ module.exports = {
 
       const leaderboard = new EmbedBuilder()
         .setTitle(`Top ${limit} Global Users by Balance`)
-        .setColor('#0000ff')
+        .setColor('#ffffff')
         .setDescription(`Your rank: #${authorRank}`)
         .setTimestamp();
 

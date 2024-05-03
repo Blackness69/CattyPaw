@@ -51,7 +51,7 @@ module.exports = {
 
     const confirmEmbed = new EmbedBuilder()
       .setTitle('Give Confirmation')
-      .setColor('#0000ff')
+      .setColor('#ffffff')
       .setDescription(`${msg.author}, are you sure you want to give **__${amount.toLocaleString()}__** ${currency} CP coins to ${member}? You can't undo it later.`);
 
     const confirmMsg = await msg.reply({
