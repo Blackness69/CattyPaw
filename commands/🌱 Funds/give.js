@@ -17,10 +17,17 @@ module.exports = {
     }
 
     const member = msg.mentions.members.first();
+    
     if (!member) {
       return msg.reply('User not found.');
     }
-
+    if (member === msg.author) {
+      return msg.reply("You can't give coins to yourself.");
+    }
+    if (member === msg.author.bot) {
+      return msg.reply("You can't give coins to bots.");
+    }
+    
     const amount = parseInt(args[1]);
     if (isNaN(amount) || amount < 0 || amount > 1000000) {
       return msg.reply('Invalid amount. Please provide a positive number.');
