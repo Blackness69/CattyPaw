@@ -1,4 +1,3 @@
-// messageCreate.js
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
@@ -13,13 +12,11 @@ module.exports = {
     if (!user) {
       return msg.reply(`**${msg.author.displayName}**, oopsie! It seems like you haven't started your adventure yet! How about beginning your journey by typing \`${prefix}start\`? 🌟`);
     }
-    if (args.length !== 2) {
+    if (!args[0] || !args[1]) {
       return msg.reply('Please provide the user mentioned and the amount to give.');
     }
 
-    const userId = args[0].replace(/[<@!>]/g, ''); // Extract user ID from mention
-    const member = msg.guild.members.cache.get(userId); // Find member by ID
-
+    const member = msg.mentions.members.first();
     if (!member) {
       return msg.reply('User not found.');
     }
@@ -33,7 +30,7 @@ module.exports = {
       return msg.reply(`You don't have enough ${currency} CP coins to give.`);
     }
 
-    const targetUser = await User.findOne({ userId: userId });
+    const targetUser = await User.findOne({ userId: member.user.id });
     if (!targetUser) {
       return msg.reply('Target user doesn\'t have an account yet.');
     }

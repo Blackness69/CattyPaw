@@ -1,5 +1,5 @@
 // prefix.js
-const { getPrefix } = require('../../config.js');
+const { getPrefix, bannedPrefix } = require('../../config.js');
 const prefixSchema = require('../../Schemas/economy/prefixSchema');
 const { PermissionsBitField } = require('discord.js');
 
@@ -20,8 +20,14 @@ module.exports = {
       return msg.reply('You do not have admin permission to use this command.');
     }
 
+    // Check if the new prefix contains any banned prefixes
+    if (bannedPrefix.some(prefix => newPrefix.includes(prefix))) {
+      return msg.reply('This prefix is temporarily unavailable.');
+    }
+    
     try {
-      let prefixData = await prefixSchema.findOne({ guildId: msg.guild.id });
+      
+        let prefixData = await prefixSchema.findOne({ guildId: msg.guild.id });
 
       if (!prefixData) {
         prefixData = await prefixSchema.create({

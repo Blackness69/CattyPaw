@@ -27,15 +27,7 @@ client.on("messageCreate", async msg => {
   let prefixLength = customPrefix.length;
   if (!messageContent.startsWith(customPrefix)) {
     prefixLength = defaultPrefix.length; // Default prefix length 'cp'
-  } else if (customPrefix.includes(client.user.id)) { 
-    msg.mentions.users.delete(msg.mentions.users.keys().next().value);            
-    msg.mentions.members.delete(msg.mentions.users.keys().next().value);
   }
-
-  // Remove mentions from the message content
-  msg.mentions.users.forEach(user => {
-    messageContent = messageContent.replace(`<@${user.id}>`, '').trim();
-  });
 
   const args = messageContent.slice(prefixLength).trim().split(/ +/);
 
