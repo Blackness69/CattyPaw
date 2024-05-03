@@ -7,11 +7,12 @@ const { grantXP } = require('../../handlers/xpHandler');
 
 // Define animals with their probabilities (rarity)
 const animals = [
-  { emojis: ['🐀', '🐄', '🐒', '🐕', '🐥'], probability: 0.8 },  // 80% chance
-  { emojis: ['🐎', '🦊', '🦮', '🦆', '🦥'], probability: 0.06 }, // 60% chance
-  { emojis: ['🦒', '🐑', '🦓', '🦛', '🐪'], probability: 0.4 },  // 40% chance
-  { emojis: ['🐐', '🐼', '🕊️', '🦏', '🐘'], probability: 0.2 },  // 20% chance
-  { emojis: ['🦣', '🐉', '🦖', '🦅', '🦍'], probability: 0.03 }, // 3% chance
+  { emojis: ['🐝', '🐛', '🐌', '🐞', '🦋'], probability: 0.9 },  // 90% chance
+  { emojis: ['🐤', '🐁', '🐓', '🐇', '🐿️'], probability: 0.8 }, // 80% chance
+  { emojis: ['🐏', '🐖', '🐄', '🐕', '🐈'], probability: 0.7 }, // 70% chance
+  { emojis: ['🐊', '🐅', '🐧', '🐘', '🐳'], probability: 0.5 },  // 40% chance
+  { emojis: ['🐉', '🦄', '☃️', '👻', '🕊️'], probability: 0.2 },  // 20% chance
+  { emojis: ['🦁', '🦣', '🦖', '🦅', '🦍'], probability: 0.05 }, // 5% chance
 ];
 
 module.exports = {
