@@ -19,7 +19,7 @@ client.on("messageCreate", async msg => {
 
   const customPrefix = (await getPrefix(msg.guild.id)).toLowerCase();
   const defaultPrefix = "cp";
-  const messageContent = msg.content.toLowerCase();
+  let messageContent = msg.content.toLowerCase(); // Declare as let
 
   // Check if the message starts with the custom prefix or with the default prefix "cp"
   if (!messageContent.startsWith(customPrefix) && !messageContent.startsWith(defaultPrefix)) return;
