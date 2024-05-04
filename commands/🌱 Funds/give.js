@@ -67,7 +67,7 @@ module.exports = {
     });
 
     const filter = i => i.user.id === msg.author.id;
-    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 35000 });
+    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 240000 });
 
     collector.on('collect', async i => {
       if (i.customId === 'confirm_give') {
