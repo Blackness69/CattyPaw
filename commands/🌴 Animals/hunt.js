@@ -9,8 +9,8 @@ const { grantXP } = require('../../handlers/xpHandler');
 const animals = [
   { emojis: ['🐝', '🐛', '🐌', '🐞', '🦋'], probability: 0.9 },  // 90% chance
   { emojis: ['🐤', '🐁', '🐔', '🐇', '🐿️'], probability: 0.8 }, // 80% chance
-  '🐑': 35,
-  { emojis: ['🐊', '🐅', '🐧', '🐘', '🐳'], probability: 0.5 },  // 40% chance
+  { emojis: ['🐑', '🐖', '🐄', '🐕', '🐈'], probability: 0.6 }, // 60% chance
+  { emojis: ['🐊', '🐅', '🐧', '🐘', '🐳'], probability: 0.4 },  // 40% chance
   { emojis: ['🐉', '🦄', '☃️', '👻', '🕊️'], probability: 0.2 },  // 20% chance
   { emojis: ['🦁', '🦣', '🦖', '🦅', '🦍'], probability: 0.05 }, // 5% chance
 ];
