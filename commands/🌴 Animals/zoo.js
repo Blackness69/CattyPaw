@@ -41,7 +41,7 @@ module.exports = {
         let animalString = '';
         animals.forEach(animal => {
           const count = huntedAnimals.filter(a => a === animal).length;
-          animalString += count > 0 ? `${animal}${count <= 9 ? smallNumbers[count] : count} ` : '❔ ';
+          animalString += count > 0 ? `${animal}${count <= 9 ? smallNumbers[count] : count.toString().split('').map(digit => smallNumbers[parseInt(digit)]).join('')} ` : '❔ ';
         });
         zooDescription += `${rank} | ${animalString}\n`;
       }
