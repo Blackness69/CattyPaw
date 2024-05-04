@@ -45,6 +45,8 @@ function getAnimalEmoji(name) {
     butterfly: '🦋',
     chick: '🐤',
     mouse: '🐁',
+    rat: '🐁',
+    mouse2: '🐁',
     chicken: '🐔',
     rabbit: '🐇',
     squirrel: '🐿️',
