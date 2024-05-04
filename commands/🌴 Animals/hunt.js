@@ -58,7 +58,7 @@ module.exports = {
       const xpToAdd = 5;
       await grantXP(msg.author.id, xpToAdd);
 
-      msg.reply(`You spent **__30__** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
+      msg.reply(`You spent **__20__** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
 
       // Save the hunted animals to the database
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals } }, { upsert: true });
