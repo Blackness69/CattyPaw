@@ -33,15 +33,15 @@ module.exports = {
       const huntedAnimals = (await Hunt.findOne({ userId: msg.author.id }))?.huntedAnimals || [];
 
       const zooEmbed = new EmbedBuilder()
-        .setTitle(`${msg.author.displayName}'s Zoo`)
-        .setColor('#0099ff');
+        .setTitle(`🌱 **${msg.author.displayName}**'s Zoo 🌱`)
+        .setColor('#ffffff');
 
       let zooDescription = '';
       for (const [rank, animals] of Object.entries(ranks)) {
         let animalString = '';
         animals.forEach(animal => {
           const count = huntedAnimals.filter(a => a === animal).length;
-          animalString += count > 0 ? `${animal}${smallNumbers[count]} ` : '❔ ';
+          animalString += count > 0 ? `${animal}${smallNumbers[count] || ''} ` : '❔ ';
         });
         zooDescription += `${rank} | ${animalString}\n`;
       }
