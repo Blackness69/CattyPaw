@@ -54,4 +54,4 @@ module.exports = {
       msg.reply('An error occurred while processing your request.');
     }
   },
-};
+}; 
