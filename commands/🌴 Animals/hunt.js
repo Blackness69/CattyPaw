@@ -31,7 +31,7 @@ module.exports = {
 
       const cooldown = await Cooldown.findOne({ userId: msg.author.id });
 
-      if (!user || user.balance < 30) {
+      if (!user || user.balance < 20) {
         return msg.reply(`You don't have enough ${currency} CP coins to go for a hunt.`);
       }
 
@@ -55,7 +55,7 @@ module.exports = {
       }
 
       // Grant XP to the user
-      const xpToAdd = 3;
+      const xpToAdd = 5;
       await grantXP(msg.author.id, xpToAdd);
 
       msg.reply(`You spent **__30__** ${currency} CP coins and go for hunting. And you caught the following animals:\n${huntedAnimals.join(' ')}`);
@@ -64,7 +64,7 @@ module.exports = {
       await Hunt.findOneAndUpdate({ userId: msg.author.id }, { $push: { huntedAnimals } }, { upsert: true });
 
       // Deduct coins from the user's wallet
-      await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -30 } });
+      await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: -20 } });
 
       const timeout = 30000; // 40 seconds
       await Cooldown.findOneAndUpdate({ userId: msg.author.id }, { cooldownExpiration: Date.now() + timeout }, { upsert: true });
