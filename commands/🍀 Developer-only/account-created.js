@@ -14,8 +14,8 @@ module.exports = {
     }
 
     const userData = await User.findOne({ userId: user.id });
-    const emoji = userData ? '✅' : '❌';
+    const emoji = userData ? 'true ✅' : 'false ❌';
 
-    msg.reply(`'s account created: ${emoji}`);
+    msg.reply(`**${user.displayName}**'s account created: **${emoji}**`);
   },
 };
