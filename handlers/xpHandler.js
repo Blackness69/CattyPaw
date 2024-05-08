@@ -50,7 +50,7 @@ const handleLevelUp = async (msg, user) => {
       )
       .setBackground(
         "image",
-        "https://cdn.discordapp.com/attachments/1233782937795821660/1237255292098445332/20240507_100928.png?ex=663afb48&is=6639a9c8&hm=bba7c0d92d36f2879e0e4fffdad9f9c4938da5de6809fa2968bd5b9392c562ee&"
+        "https://cdn.discordapp.com/attachments/1233782937795821660/1237255292098445332/20240507_100928.png?ex=663c4cc8&is=663afb48&hm=85c9d455b43b6d88b4e74c8ad358b5392cc951466425869e8a8bdbd6c372e1ec&"
       )
       .setUsername(`${msg.author.username}`)
       .setBorder("#000000")
