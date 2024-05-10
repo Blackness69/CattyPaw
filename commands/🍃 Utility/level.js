@@ -33,7 +33,7 @@ module.exports = {
       const avatarURL = targetUser.displayAvatarURL({ format: 'jpg' });
       const xpNeededForNextLevel = 360 + (user.level - 1) * 360;
 
-      let backgroundImageURL = 'https://cdn.discordapp.com/attachments/1233782937795821660/1237255292098445332/20240507_100928.png?ex=663c4cc8&is=663afb48&hm=85c9d455b43b6d88b4e74c8ad358b5392cc951466425869e8a8bdbd6c372e1ec&'; // Set your background image URL here if needed
+      let backgroundImageURL = 'https://i.imgur.com/cJCn4HA.jpeg'; // Set your background image URL here if needed
 
       // Sort all users by level
       const allUsers = await Level.find();
