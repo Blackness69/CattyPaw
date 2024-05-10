@@ -72,7 +72,7 @@ module.exports = {
       .setTimestamp();
     const response = await msg.channel.send({ embeds: [helpEmbed], components: [row] });
     try {
-const collector = response.createMessageComponentCollector({time: 150000 });
+const collector = response.createMessageComponentCollector({time: 480000 });
       collector.on('collect', async i => {
         if(i.customId !== 'helpCommand') return;
         if(i.user.id !== msg.author.id) return i.reply({ content: `That's not your help menu! Create one with \`\`cp help\`\``, ephemeral: true });   
@@ -82,6 +82,9 @@ const collector = response.createMessageComponentCollector({time: 150000 });
         } else if (value === 'homepage') {
           await i.update({ embeds: [helpEmbed], components: [row] });
         }
+      })
+      collector.on('end', () => {
+        await i.update({ content: 'help command timed out', components: [] });
       })
     } catch (error) {
       console.error(error);
