@@ -84,8 +84,12 @@ const collector = response.createMessageComponentCollector({time: 480000 });
         }
       })
       collector.on('end', async () => {
-        await i.update({ content: 'help command timed out', components: [] });
-      })
+        try {
+          await response.edit({ content: 'Help menu timed out.', components: [] });
+        } catch (error) {
+          console.error('Error updating message:', error);
+        }
+      });
     } catch (error) {
       console.error(error);
     }
