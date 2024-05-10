@@ -72,7 +72,7 @@ module.exports = {
       await grantXP(msg.author.id, xpToAdd);
 
       // Send the initial message indicating the user's choice and the amount bet
-      let initialMessage = await msg.reply(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips ${coinflip}`);
+      let initialMessage = await msg.reply(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips... ${coinflip}`);
 
       const result = Math.random() < 0.5 ? 'heads' : 'tails'; // Generate random result for the coinflip
 
@@ -99,9 +99,9 @@ module.exports = {
       // Edit the initial message to display the outcome and winnings after 4 seconds
       setTimeout(() => {
         if (outcome === 'won') {
-          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips ${coinflip2} and you won **__${winnings.toLocaleString()}__** ${currency} CP coins.`);
+          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips... ${coinflip2} and you won **__${winnings.toLocaleString()}__** ${currency} CP coins.`);
         } else {
-          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips ${coinflip2} and you ${outcome} **__${amount.toLocaleString()}__** ${currency} CP coins.`);
+          initialMessage.edit(`**${user.displayName}**, You bet **__${amount.toLocaleString()}__** ${currency} CP coins and choose **${betLabel}**.\nAnd the coin flips... ${coinflip2} and you ${outcome} **__${amount.toLocaleString()}__** ${currency} CP coins.`);
         }
       }, 4000);
 
