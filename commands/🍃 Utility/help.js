@@ -83,7 +83,7 @@ const collector = response.createMessageComponentCollector({time: 480000 });
           await i.update({ embeds: [helpEmbed], components: [row] });
         }
       })
-      collector.on('end', () => {
+      collector.on('end', async () => {
         await i.update({ content: 'help command timed out', components: [] });
       })
     } catch (error) {
