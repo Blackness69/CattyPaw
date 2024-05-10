@@ -42,7 +42,7 @@ module.exports = {
           .setOpacity(0.6)
           .setScoreMessage('Level:')
           .setabbreviateNumber(false)
-          .setBackground('image', 'https://i.imgur.com/pFGMERm.png')
+          .setBackground('image', 'https://imgur.com/pFGMERm.png')
           .setColors({ box: '#212121', username: '#ffffff', score: '#ffffff', firstRank: '#f7c716', secondRank: '#9e9e9e', thirdRank: '#94610f' })
           .setUsersData(filteredUsersData)
           .build();

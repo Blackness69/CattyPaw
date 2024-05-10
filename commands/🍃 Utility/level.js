@@ -33,7 +33,7 @@ module.exports = {
       const avatarURL = targetUser.displayAvatarURL({ format: 'jpg' });
       const xpNeededForNextLevel = 360 + (user.level - 1) * 360;
 
-      let backgroundImageURL = 'https://i.imgur.com/cJCn4HA.jpeg'; // Set your background image URL here if needed
+      let backgroundImageURL = 'https://imgur.com/BdBVtSo.png'; // Set your background image URL here if needed
 
       // Sort all users by level
       const allUsers = await Level.find();
