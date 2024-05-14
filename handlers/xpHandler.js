@@ -50,7 +50,7 @@ const handleLevelUp = async (msg, user) => {
       )
       .setBackground(
         "image",
-        "https://imgur.com/BdBVtSo.png"
+        "https://i.pinimg.com/originals/27/2e/74/272e74c0d96d36031c054ac6421b971e.gif"
       )
       .setUsername(`${msg.author.username}`)
       .setBorder("#000000")
