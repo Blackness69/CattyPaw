@@ -1,17 +1,17 @@
 // zoo.js
 const Hunt = require('../../Schemas/economy/huntSchema');
 const User = require('../../Schemas/economy/userSchema');
-const { getPrefix, currency } = require('../../config.js');
+const { getPrefix, currency, emojis } = require('../../config.js');
 const { EmbedBuilder } = require('discord.js');
 
 // Define animals with their ranks
 const ranks = {
-  '<:common:1235939253272186946>': ['🐝', '🐛', '🐌', '🐞', '🦋'],
-  '<:uncommon:1235939386089017395>': ['🐤', '🐁', '🐔', '🐇', '🐿️'],
-  '<:rare:1235939428019605614>': ['🐑', '🐖', '🐄', '🐕', '🐈'],
-  '<:epic:1235939504204943391>': ['🐊', '🐅', '🐧', '🐘', '🐳'],
-  '<:mythic:1235939546458361936>': ['🐉', '🦄', '☃️', '👻', '🕊️'],
-  '<:legendary:1235939573574406174>': ['🦁', '🦣', '🦖', '🦅', '🦍']
+  [emojis.common]: ['🐝', '🐛', '🐌', '🐞', '🦋'],
+  [emojis.uncommon]: ['🐤', '🐁', '🐔', '🐇', '🐿️'],
+  [emojis.rare]: ['🐑', '🐖', '🐄', '🐕', '🐈'],
+  [emojis.epic]: ['🐊', '🐅', '🐧', '🐘', '🐳'],
+  [emojis.mythic]: ['🐉', '🦄', '☃️', '👻', '🕊️'],
+  [emojis.legendary]: ['🦁', '🦣', '🦖', '🦅', '🦍']
 };
 
 // Unicode superscript characters for small numbers

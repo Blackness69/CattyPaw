@@ -19,5 +19,13 @@ module.exports = {
   coinflip: "<a:coinflip:1233779307302621267>",
   coinflip2: "<:coinflip2:1233779443001200670>",
   mongoURL: process.env.mongoURL || readFileSync('mongoURL.txt', 'utf-8'),
-  YOUTUBE_API_KEY: process.env.YoutubeApiKey
+  YOUTUBE_API_KEY: process.env.YoutubeApiKey,
+  emojis: {
+    common: "<:common:1240652590711312404>",
+    uncommon: "<:uncommon:1240652713755410473>",
+    rare: "<:rare:1240652798056464404>",
+    epic: "<:epic:1240652892319518793>",
+    mythic: "<:mythic:1240653000037634048>",
+    legendary: "<:legendary:1240653079611965520>"
+  }
 };
