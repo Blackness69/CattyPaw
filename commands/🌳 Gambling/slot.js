@@ -54,7 +54,7 @@ module.exports = {
         return msg.reply(`You don't have enough ${currency} CP coins to make that bet`);
       }
 
-      const xpToAdd = 17;
+      const xpToAdd = 12;
       await grantXP(msg.author.id, xpToAdd);
 
       const outcome = [];

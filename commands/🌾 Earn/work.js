@@ -33,8 +33,8 @@ module.exports = {
       let message;
 
       if (randomOutcome === 'win') {
-        const randomCoins = Math.floor(Math.random() * (801 - 200)) + 200; // Random number between 200 and 800
-        const xpToAdd = 5;
+        const randomCoins = Math.floor(Math.random() * (901 - 200)) + 400; // Random number between 200 and 800
+        const xpToAdd = 4;
         await grantXP(msg.author.id, xpToAdd);
         message = `You worked and got **__${randomCoins.toLocaleString()}__** ${currency} CP coins.`;
         await User.findOneAndUpdate({ userId: msg.author.id }, { $inc: { balance: randomCoins } });

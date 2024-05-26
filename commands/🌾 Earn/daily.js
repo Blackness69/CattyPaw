@@ -41,7 +41,7 @@ module.exports = {
         newCooldown,
         { upsert: true, new: true }
       );
-      const xpToAdd = 5;
+      const xpToAdd = 8;
       await grantXP(msg.author.id, xpToAdd);
 
       await msg.reply(`You have claimed your daily **__${randomReward.toLocaleString()}__** ${currency} CP coins.`)

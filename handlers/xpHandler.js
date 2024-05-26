@@ -7,7 +7,7 @@ const client = require(process.cwd() + '/index.js');
 const { currency } = require('../config');
 
 // Function to grant XP to a user
-const grantXP = async (userId, xpToAdd = 12) => { // Add default value of 4 XP
+const grantXP = async (userId, xpToAdd = 4) => { // Add default value of 4 XP
   let user = await Level.findOne({ userId });
   if (!user) {
     user = await Level.create({
@@ -22,7 +22,7 @@ const grantXP = async (userId, xpToAdd = 12) => { // Add default value of 4 XP
 
 // Function to handle level up
 const handleLevelUp = async (msg, user) => {
-  const xpToLevelUp = 360 + (user.level - 1) * 360;
+  const xpToLevelUp = 80 + (user.level - 1) * 80;
   if (user.xp >= xpToLevelUp) {
     user.xp -= xpToLevelUp;
     user.level++;
@@ -30,7 +30,7 @@ const handleLevelUp = async (msg, user) => {
     const cooldownTime = 30000; // 30 seconds cooldown
     client.cooldowns.set(msg.author.id, Date.now() + cooldownTime);
 
-    const balanceToAdd = user.level === 2 ? 25000 : 25000 + (user.level - 2) * 5000;
+    const balanceToAdd = user.level === 2 ? 15000 : 15000 + (user.level - 2) * 5000;
 
     await User.findOneAndUpdate(
       { userId: msg.author.id },

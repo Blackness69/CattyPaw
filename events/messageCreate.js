@@ -49,11 +49,11 @@ client.on("messageCreate", async msg => {
     // Check cooldown for XP from messaging
     const cooldownExpiration = messageCooldowns.get(msg.author.id);
     if (!cooldownExpiration || Date.now() > cooldownExpiration) {
-      // Grant 12 XP for each message sent
+      // Grant 4 XP for each message sent
       await grantXP(msg.author.id);
 
-      // Set cooldown expiration time (30 seconds cooldown)
-      messageCooldowns.set(msg.author.id, Date.now() + 30000);
+      // Set cooldown expiration time (10 seconds cooldown)
+      messageCooldowns.set(msg.author.id, Date.now() + 10000);
     }
 
     // Fetch or create user data from the Level schema

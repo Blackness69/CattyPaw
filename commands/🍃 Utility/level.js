@@ -31,7 +31,7 @@ module.exports = {
       }
 
       const avatarURL = targetUser.displayAvatarURL({ format: 'jpg' });
-      const xpNeededForNextLevel = 360 + (user.level - 1) * 360;
+      const xpNeededForNextLevel = 80 + (user.level - 1) * 80;
 
       let backgroundImageURL = 'https://i.pinimg.com/originals/27/2e/74/272e74c0d96d36031c054ac6421b971e.gif'; // Set your background image URL here if needed
 
