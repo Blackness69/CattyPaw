@@ -70,4 +70,18 @@ for (const file of tableFiles) {
  client.on("ready", require(`./tables/${file}`));
 }
 
+const process = require('node:process');
+
+process.on('unhandledRejection', async (reason, promise) => {
+    console.log('Unsupported rejection at:', promise, 'Reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.log('Uncatchable exception:', err);
+});
+
+process.on("uncaughtExceptionMonitor", (err, origin) => {
+    console.log('Monitor uncaught exceptions:', err, origin);
+});
+
 client.login(token);
