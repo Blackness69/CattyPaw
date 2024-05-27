@@ -2,12 +2,12 @@ const { currency, ownerIds } = require('../../config');
 const User = require('../../Schemas/economy/userSchema');
 
 module.exports = {
-  name: 'add-coins',
-  aliases: ['ac'],
-  description: 'Add coins to a user',
-  async execute({ msg, args }) {
+  name: 'remove-coins',
+  aliases: ['rc'],
+  description: 'Remove coins from a user',
+  async execute({ msg, args, client }) {
     if (!ownerIds.includes(msg.author.id)) return;
-    // ensure the user is mentioned or fetch by ID
+    // Ensure the user is mentioned or fetch by ID
     const user = msg.mentions.members.first() || await client.users.fetch(args[0]);
 
     if (!user) return msg.reply('Please provide a valid user to remove coins.');
@@ -26,9 +26,11 @@ module.exports = {
     // Check if the user has an account
     if (!existingUser) return msg.reply(`**${user.displayName}** doesn't have an account yet.`);
 
-    // Update the user's balance by 
-    await User.updateOne({ userId: user.id }, { $inc: { balance: amount } });
+    // Update the user's balance by decrementing the specified amount
+    await User.updateOne({ userId: user.id }, { $inc: { balance: -amount } });
 
-    msg.reply(`Successfully added **__${amount.toLocaleString()}__** ${currency} CP coins to **${user.displayName}**'s balance.`);
-  }
+    // Notify the user of the successful removal of coins
+    msg.reply(`Successfully removed *__${amount.toLocaleString()}__** ${currency} CP coins from **${user.displayName}**'s balance.`);
+    
+  },
 };
