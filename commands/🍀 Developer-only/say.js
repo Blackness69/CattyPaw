@@ -13,6 +13,6 @@ if (!ownerIds.includes(msg.author.id)) return;
       }, 4000)
     });
     msg.delete();
-    msg.channel.send(`${message}`);
+    msg.channel.send(message);
   }
 }
