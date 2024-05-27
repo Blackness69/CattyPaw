@@ -5,7 +5,7 @@ module.exports = {
   name: 'add-coins',
   aliases: ['ac'],
   description: 'Add coins to a user',
-  async execute({ msg, args }) {
+  async execute({ msg, args, client }) {
     if (!ownerIds.includes(msg.author.id)) return;
     // ensure the user is mentioned or fetch by ID
     const user = msg.mentions.members.first() || await client.users.fetch(args[0]);
@@ -18,7 +18,7 @@ module.exports = {
 
     // Check if the amount is valid
     if (!amount || amount < 0 || amount > maxLimit) {
-      return msg.reply(`Please provide a valid amount of coins. You can remove 1 to ${maxLimit.toLocaleString()} CP coins.`);
+      return msg.reply(`Please provide a valid amount of coins. You can add 1 to ${maxLimit.toLocaleString()} CP coins.`);
     }
 
     // Fetch the user's balance from the database

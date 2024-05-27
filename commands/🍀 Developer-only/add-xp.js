@@ -5,11 +5,11 @@ module.exports = {
   name: 'add-xp',
   aliases: ['ax'],
   description: 'Add XP to a user',
-  async execute({msg, args}) {
+  async execute({msg, args, client}) {
     if (!ownerIds.includes(msg.author.id)) return;
 
-    const user = msg.mentions.members.first();
-    if (!user) return msg.reply('Please mention a user');
+    const user = msg.mentions.members.first() || await client.users.fetch(args[0]);
+    if (!user) return msg.reply('Please provide a valid user');
 
     const userId = user.id;
 

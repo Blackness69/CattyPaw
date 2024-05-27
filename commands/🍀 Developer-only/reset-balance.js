@@ -5,11 +5,11 @@ module.exports = {
   name: 'reset-balance',
   aliases: ['rb', 'reset-cash', 'reset-coins', 'rc'],
   description: 'Reset the balance of a user',
-  async execute({ msg }) {
+  async execute({ msg, client, args }) {
     // Check if the command is being executed by an owner
     if (!ownerIds.includes(msg.author.id)) return;
 
-    let user = msg.mentions.members.first();
+    let user = msg.mentions.members.first() || await client.users.fetch(args[0]);
     if (!user) {
       user = msg.author;
     }
