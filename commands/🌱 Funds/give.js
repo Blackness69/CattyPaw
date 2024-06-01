@@ -3,7 +3,7 @@ const User = require('../../Schemas/economy/userSchema');
 const { getPrefix, currency } = require('../../config.js');
 
 module.exports = {
-  usage: 'cp give <user> <amount>',
+  usage: 'cp give <@user> <amount>',
   name: 'give',
   description: 'Give CP coins to another user',
   async execute({ msg, args }) {
@@ -67,7 +67,7 @@ module.exports = {
     });
 
     const filter = i => i.user.id === msg.author.id;
-    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 240000 });
+    const collector = confirmMsg.createMessageComponentCollector({ filter, time: 180000 });
 
     collector.on('collect', async i => {
       if (i.customId === 'confirm_give') {
@@ -91,13 +91,10 @@ module.exports = {
     });
 
     collector.on('end', () => {
-      if (confirmMsg.components.length > 0) {
         confirmMsg.edit({
           content: 'Give command timed out. Please try again.',
           components: [],
-          embeds: [],
         });
-      }
     });
   },
 };
