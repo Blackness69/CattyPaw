@@ -6,7 +6,7 @@ module.exports = {
   usage: 'cp give <@user> <amount>',
   name: 'give',
   description: 'Give CP coins to another user',
-  async execute({ msg, args }) {
+  async execute({ client, msg, args }) {
     const user = await User.findOne({ userId: msg.author.id });
     const prefix = await getPrefix(msg.guild.id);
     if (!user) {
@@ -17,23 +17,23 @@ module.exports = {
     }
 
     const member = msg.mentions.members.first();
-    
+
     if (!member) {
       return msg.reply('User not found.');
     }
-    if (member && member.id === msg.author.id) {
+    if (member.id === msg.author.id) {
       return msg.reply("You can't give coins to yourself.");
     }
-    if (member && member.user.bot) {
+    if (member.user.bot) {
       return msg.reply("You can't give coins to bots.");
     }
-    
+
     const amount = parseInt(args[1]);
-    if (isNaN(amount) || amount < 0 || amount > 1000000) {
+    if (isNaN(amount) || amount <= 0 || amount > 1000000) {
       return msg.reply('Invalid amount. Please provide a positive number.');
     }
 
-    if (!user || user.balance < amount) {
+    if (user.balance < amount) {
       return msg.reply(`You don't have enough ${currency} CP coins to give.`);
     }
 
@@ -75,13 +75,13 @@ module.exports = {
         targetUser.balance += amount;
         await user.save();
         await targetUser.save();
-        await confirmMsg.edit({
+        await i.update({
           content: `${member}, ${msg.author} gave you **__${amount.toLocaleString()}__** ${currency} CP coins!`,
           components: [],
           embeds: [],
         });
       } else if (i.customId === 'cancel_give') {
-        await confirmMsg.edit({
+        await i.update({
           content: 'Give command cancelled.',
           components: [],
           embeds: [],
@@ -90,11 +90,13 @@ module.exports = {
       collector.stop();
     });
 
-    collector.on('end', () => {
+    collector.on('end', collected => {
+      if (collected.size === 0) {
         confirmMsg.edit({
           content: 'Give command timed out. Please try again.',
           components: [],
         });
+      }
     });
   },
 };
